@@ -53,7 +53,7 @@ public class ShowServicesTest {
 
         // Verificar a distribuição dos ingressos
         int totalIngressos = lote.getIngressos().size();
-        int expectedVip = (int) (totalIngressos * 0.20);
+        int expectedVip = (int) (totalIngressos * vip);
         int expectedMeiaEntrada = (int) (totalIngressos * 0.10);
         int expectedNormal = totalIngressos - expectedVip - expectedMeiaEntrada;
 
