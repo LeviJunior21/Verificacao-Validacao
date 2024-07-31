@@ -70,4 +70,14 @@ public class ShowModel {
     public void setEspecial(Boolean especial) {
         isEspecial = especial;
     }
+
+    @Override
+    public String toString() {
+        return "data=" + data +
+                ", artista='" + artista + '\'' +
+                ", cache=" + cache +
+                ", despesasInfra=" + despesasInfra +
+                ", lotes=" + lotes +
+                ", isEspecial=" + isEspecial;
+    }
 }
