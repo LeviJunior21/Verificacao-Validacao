@@ -40,5 +40,16 @@ class ProcessadorContasTest {
 		// Assert
 		assertEquals("PAGA", this.fatura.getStatus());
 	}
-
+	
+	@Test
+	void quandoProcessamentoContasDeUmaFataturaPendente() {
+		// Arrange
+		this.fatura = new Fatura(new Date(24, 07, 2024), 500.00, "Usuário 2");
+		
+		// Act
+		this.processadorContas.processarContas(fatura, contas);
+		
+		// Assert
+		assertEquals("PENDENTE", this.fatura.getStatus());
+	}
 }
