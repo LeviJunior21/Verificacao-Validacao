@@ -50,7 +50,7 @@ public class ShowServices {
         showRepository.save(showModel);
     }
 
-    public IngressoModel comprarIngresso(Date date, String artista, Long idLote, TipoIngressoEnum vip) {
+    public IngressoModel comprarIngresso(Date date, String artista, Long idLote, TipoIngressoEnum tipo) {
         ShowModel showModel = showRepository.findById(date, artista).orElseThrow();
 
         LoteModel lote = showModel.getLotes().stream()
@@ -63,7 +63,7 @@ public class ShowServices {
         }
 
         for (IngressoModel ingressoModel : lote.getIngressos()) {
-            if (!ingressoModel.isVendido()) {
+            if (!ingressoModel.isVendido() && (tipo == null || ingressoModel.getTipoIngresso().equals(tipo))) {
                 ingressoModel.setVendido(true);
                 return ingressoModel;
             }

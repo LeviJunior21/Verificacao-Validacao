@@ -209,7 +209,7 @@ public class ShowServicesTest {
             Double cache = 1000.0;
             Double totalDespesas = 2000.0;
             Integer quantLotes = 1;
-            Integer quantIngressosPorLote = 10;
+            Integer quantIngressosPorLote = 34;
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
@@ -342,7 +342,7 @@ public class ShowServicesTest {
             LoteModel lote = show.getLotes().getFirst();
             for (int i = 0; i < 10; i++) {
                 // Compra um ingresso
-                showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP);
+                showServices.comprarIngresso(data, artista, lote.getId(), null);
             }
 
             // Cria o relatório
@@ -376,7 +376,7 @@ public class ShowServicesTest {
             LoteModel lote = show.getLotes().getFirst();
             for (int i = 0; i < 10; i++) {
                 // Compra um ingresso
-                showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP);
+                showServices.comprarIngresso(data, artista, lote.getId(), null);
             }
 
             // Cria o relatório
