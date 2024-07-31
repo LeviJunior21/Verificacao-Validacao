@@ -108,4 +108,15 @@ class ShowModelTest {
         showModel.setEspecial(IS_DATA_ESPECIAL);
         assertEquals(IS_DATA_ESPECIAL, showModel.isEspecial());
     }
+
+    @Test
+    void toStringTest() {
+        ShowModel showModel = new ShowModel(IS_DATA_ESPECIAL, LOTES, DESPESAS_INFRA, CACHE, NOME_ARTISTA, date);
+        assertEquals(showModel.toString(), "data=" + date +
+                ", artista='" + NOME_ARTISTA + '\'' +
+                ", cache=" + CACHE +
+                ", despesasInfra=" + DESPESAS_INFRA +
+                ", lotes=" + LOTES +
+                ", isEspecial=" + IS_DATA_ESPECIAL, "Date diferente");
+    }
 }
