@@ -7,6 +7,15 @@ public class LoteModel {
     private List<IngressoModel> ingressos;
     private Double desconto;
 
+    public LoteModel(Double desconto, List<IngressoModel> ingressos, Long id) {
+        this.desconto = desconto;
+        this.ingressos = ingressos;
+        this.id = id;
+    }
+
+    public LoteModel() {
+    }
+
     public Long getId() {
         return id;
     }

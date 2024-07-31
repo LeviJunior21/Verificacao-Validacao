@@ -1,22 +1,23 @@
 package br.edu.ufcg.ccc.vv.models;
 
 import java.util.Date;
+import java.util.List;
 
 public class ShowModel {
     private Date data;
     private String artista;
     private Double cache;
     private Double despesasInfra;
-    private Integer lotes;
+    private List<LoteModel> lotes;
     private Boolean isEspecial;
 
-    public ShowModel(Boolean isEspecial, Integer lotes, Double despesasInfra, Double cache, String artista, Date data) {
-        this.isEspecial = isEspecial;
-        this.lotes = lotes;
-        this.despesasInfra = despesasInfra;
-        this.cache = cache;
-        this.artista = artista;
+    public ShowModel(Date data, String artista, Double cache, Double despesasInfra, List<LoteModel> lotes, Boolean isEspecial) {
         this.data = data;
+        this.artista = artista;
+        this.cache = cache;
+        this.despesasInfra = despesasInfra;
+        this.lotes = lotes;
+        this.isEspecial = isEspecial;
     }
 
     public ShowModel() {
@@ -55,11 +56,11 @@ public class ShowModel {
         this.despesasInfra = despesasInfra;
     }
 
-    public Integer getLotes() {
+    public List<LoteModel> getLotes() {
         return lotes;
     }
 
-    public void setLotes(Integer lotes) {
+    public void setLotes(List<LoteModel> lotes) {
         this.lotes = lotes;
     }
 

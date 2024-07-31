@@ -9,6 +9,13 @@ public class IngressoModel {
     public IngressoModel() {
     }
 
+    public IngressoModel(Long id, TipoIngressoEnum tipoIngresso, Boolean isVendido, Double valor) {
+        this.id = id;
+        this.tipoIngresso = tipoIngresso;
+        this.isVendido = isVendido;
+        this.valor = valor;
+    }
+
     public Long getId() {
         return id;
     }

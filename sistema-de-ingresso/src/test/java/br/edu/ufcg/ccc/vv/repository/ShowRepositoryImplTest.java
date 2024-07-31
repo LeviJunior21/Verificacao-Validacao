@@ -21,7 +21,7 @@ public class ShowRepositoryImplTest {
     @Test
     public void testSave() {
         Date data = new Date();
-        ShowModel show = new ShowModel(true, 5, 1000.0, 5000.0, "Artista Teste", data);
+        ShowModel show = new ShowModel(data, "Artista Teste", 1000.0, 5000.0, null, true);
 
         ShowModel savedShow = showRepository.save(show);
 
@@ -32,7 +32,7 @@ public class ShowRepositoryImplTest {
     @Test
     public void testFindById() {
         Date data = new Date();
-        ShowModel show = new ShowModel(true, 5, 1000.0, 5000.0, "Artista Teste", data);
+        ShowModel show = new ShowModel(data, "Artista Teste", 1000.0, 5000.0, null, true);
         showRepository.save(show);
 
         Optional<ShowModel> foundShow = showRepository.findById(data, "Artista Teste");
@@ -44,10 +44,10 @@ public class ShowRepositoryImplTest {
     @Test
     public void testFindAll() {
         Date data1 = new Date();
-        ShowModel show1 = new ShowModel(true, 5, 1000.0, 5000.0, "Artista Teste 1", data1);
+        ShowModel show1 = new ShowModel(data1, "Artista Teste 1", 1000.0, 5000.0, null, true);
 
         Date data2 = new Date();
-        ShowModel show2 = new ShowModel(false, 10, 2000.0, 10000.0, "Artista Teste 2", data2);
+        ShowModel show2 = new ShowModel(data2, "Artista Teste 2", 1000.0, 5000.0, null, true);
 
         showRepository.save(show1);
         showRepository.save(show2);
@@ -62,7 +62,7 @@ public class ShowRepositoryImplTest {
     @Test
     public void testDeleteById() {
         Date data = new Date();
-        ShowModel show = new ShowModel(true, 5, 1000.0, 5000.0, "Artista Teste", data);
+        ShowModel show = new ShowModel(data, "Artista Teste", 1000.0, 5000.0, null, true);
         showRepository.save(show);
 
         showRepository.deleteById(data, "Artista Teste");
