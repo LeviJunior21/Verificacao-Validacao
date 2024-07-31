@@ -52,4 +52,8 @@ public class ShowServices {
         ShowModel showModel = new ShowModel(date, artista, cache, totalDespesas,loteModels,isDataEspecial);
         showRepository.save(showModel);
     }
+
+    public IngressoModel comprarIngresso(Date data, String artista, long l) {
+        return null;
+    }
 }

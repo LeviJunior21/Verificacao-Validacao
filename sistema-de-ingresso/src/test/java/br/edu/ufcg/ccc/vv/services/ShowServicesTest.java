@@ -169,6 +169,87 @@ public class ShowServicesTest {
         LoteModel lote = lotes.get(0);
         assertEquals(0, lote.getDesconto());
     }
+
+    @Test
+    public void testComprarIngressoComLoteDisponivel() {
+        Date data = new Date();
+        String artista = "Artista Teste";
+        Double cache = 1000.0;
+        Double totalDespesas = 2000.0;
+        Integer quantLotes = 1;
+        Integer quantIngressosPorLote = 10;
+        Double precoNormal = 10.0;
+        Boolean isDataEspecial = false;
+        Integer descontoLote = 0;
+
+        // Cria o show
+        showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote);
+
+        // Recupera o show salvo
+        ShowModel show = ((InMemoryShowRepository) showRepository).getSavedShow();
+        LoteModel lote = show.getLotes().get(0);
+        IngressoModel ingresso = lote.getIngressos().get(0);
+
+        // Compra um ingresso
+        IngressoModel comprado = showServices.comprarIngresso(data, artista, lote.getId());
+
+        assertNotNull(comprado);
+        assertEquals(ingresso, comprado);
+        assertTrue(lote.getIngressos().isEmpty()); // Verifica que o ingresso foi removido
+    }
+
+    @Test
+    public void testComprarIngressoComLoteNaoDisponivel() {
+        Date data = new Date();
+        String artista = "Artista Teste";
+        Double cache = 1000.0;
+        Double totalDespesas = 2000.0;
+        Integer quantLotes = 1;
+        Integer quantIngressosPorLote = 0; // Nenhum ingresso
+        Double precoNormal = 10.0;
+        Boolean isDataEspecial = false;
+        Integer descontoLote = 0;
+
+        // Cria o show
+        showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote);
+
+        // Recupera o show salvo
+        ShowModel show = ((InMemoryShowRepository) showRepository).getSavedShow();
+        LoteModel lote = show.getLotes().get(0);
+
+        // Tenta comprar um ingresso
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            showServices.comprarIngresso(data, artista, lote.getId());
+        });
+
+        assertEquals("Nenhum ingresso disponível para o lote", exception.getMessage());
+    }
+
+    @Test
+    public void testComprarIngressoComLoteInexistente() {
+        Date data = new Date();
+        String artista = "Artista Teste";
+        Double cache = 1000.0;
+        Double totalDespesas = 2000.0;
+        Integer quantLotes = 1;
+        Integer quantIngressosPorLote = 10;
+        Double precoNormal = 10.0;
+        Boolean isDataEspecial = false;
+        Integer descontoLote = 0;
+
+        // Cria o show
+        showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote);
+
+        // Recupera o show salvo
+        ShowModel show = ((InMemoryShowRepository) showRepository).getSavedShow();
+
+        // Tenta comprar um ingresso de um lote inexistente
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            showServices.comprarIngresso(data, artista, 999L); // ID de lote inexistente
+        });
+
+        assertEquals("Lote não encontrado", exception.getMessage());
+    }
 }
 
 class InMemoryShowRepository implements ShowRepository {
