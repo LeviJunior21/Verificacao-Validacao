@@ -1,9 +1,6 @@
 package br.edu.ufcg.ccc.vv.services;
 
-import br.edu.ufcg.ccc.vv.models.IngressoModel;
-import br.edu.ufcg.ccc.vv.models.LoteModel;
-import br.edu.ufcg.ccc.vv.models.ShowModel;
-import br.edu.ufcg.ccc.vv.models.TipoIngressoEnum;
+import br.edu.ufcg.ccc.vv.models.*;
 import br.edu.ufcg.ccc.vv.repository.ShowRepository;
 
 import java.util.ArrayList;
@@ -73,5 +70,9 @@ public class ShowServices {
         }
 
         throw new IllegalStateException("Nenhum ingresso disponível para o lote");
+    }
+
+    public RelatorioModel criarRelatorio(Date date, String artista) {
+        return null;
     }
 }
