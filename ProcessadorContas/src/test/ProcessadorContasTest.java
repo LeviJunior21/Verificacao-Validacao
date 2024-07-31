@@ -52,4 +52,17 @@ class ProcessadorContasTest {
 		// Assert
 		assertEquals("PENDENTE", this.fatura.getStatus());
 	}
+	
+	@Test
+	void quandoProcessamosContaAntesDe15Dias() {
+		// Arrange
+		this.contas = new ArrayList<>();
+		this.contas.add(new Conta("001", new Date(06, 06, 2024), 100.00, "CARTAO_CREDITO"));
+		
+		// Act
+		this.processadorContas.processarContas(fatura, contas);
+		
+		// Assert
+		assertEquals("PAGA", fatura.getStatus());
+	}
 }
