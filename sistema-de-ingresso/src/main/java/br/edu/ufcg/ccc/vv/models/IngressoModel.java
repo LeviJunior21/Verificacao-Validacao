@@ -9,6 +9,17 @@ public class IngressoModel {
     public IngressoModel() {
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("IngressoModel{");
+        sb.append("valor=").append(valor);
+        sb.append(", isVendido=").append(isVendido);
+        sb.append(", tipoIngresso=").append(tipoIngresso);
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public IngressoModel(Long id, TipoIngressoEnum tipoIngresso, Boolean isVendido, Double valor) {
         this.id = id;
         this.tipoIngresso = tipoIngresso;

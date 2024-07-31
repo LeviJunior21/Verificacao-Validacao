@@ -30,6 +30,17 @@ public class IngressoModelTest {
         ingresso.setId(null);
         assertNull(ingresso.getId());
     }
+    @Test
+    public void testToString() {
+        TipoIngressoEnum tipoIngresso = TipoIngressoEnum.NORMAL;
+
+        IngressoModel ingresso = new IngressoModel(1L, tipoIngresso, true, 150.00);
+
+        String expectedString = "IngressoModel{valor=150.0, isVendido=true, tipoIngresso=NORMAL, id=1}";
+
+        // Verificando se o resultado do toString está correto
+        assertEquals(expectedString, ingresso.toString());
+    }
 
     @Test
     public void testGetSetTipoIngresso() {

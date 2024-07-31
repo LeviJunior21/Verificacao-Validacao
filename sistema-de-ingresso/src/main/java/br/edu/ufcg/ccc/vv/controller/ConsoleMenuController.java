@@ -6,6 +6,8 @@ import br.edu.ufcg.ccc.vv.models.TipoIngressoEnum;
 import br.edu.ufcg.ccc.vv.repository.ShowRepositoryImpl;
 import br.edu.ufcg.ccc.vv.services.ShowServices;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -51,7 +53,7 @@ public class ConsoleMenuController {
     private void criarShow() {
         System.out.print("Data (yyyy-MM-dd): ");
         String dateStr = scanner.nextLine();
-        Date date = Date.from(java.time.LocalDate.parse(dateStr).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(LocalDate.parse(dateStr).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         System.out.print("Artista: ");
         String artista = scanner.nextLine();
@@ -87,7 +89,7 @@ public class ConsoleMenuController {
     private void comprarIngresso() {
         System.out.print("Data do Show (yyyy-MM-dd): ");
         String dateStr = scanner.nextLine();
-        Date date = Date.from(java.time.LocalDate.parse(dateStr).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(LocalDate.parse(dateStr).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         System.out.print("Artista: ");
         String artista = scanner.nextLine();
@@ -95,9 +97,12 @@ public class ConsoleMenuController {
         System.out.print("ID do Lote: ");
         Long idLote = scanner.nextLong();
 
+        System.out.print("Tipo de Ingresso (VIP, NORMAL, MEIA_ENTRADA): ");
+        TipoIngressoEnum tipo = TipoIngressoEnum.valueOf(scanner.next().toUpperCase());
+
         try {
-            IngressoModel ingresso = showServices.comprarIngresso(date, artista, idLote, TipoIngressoEnum.VIP);
-            System.out.println("Ingresso comprado com sucesso: " + ingresso);
+            IngressoModel ingresso = showServices.comprarIngresso(date, artista, idLote, tipo);
+            System.out.println("Ingresso comprado com sucesso: " + ingresso.toString());
         } catch (Exception e) {
             System.out.println("Erro ao comprar ingresso: " + e.getMessage());
         }
@@ -106,14 +111,19 @@ public class ConsoleMenuController {
     private void criarRelatorio() {
         System.out.print("Data do Show (yyyy-MM-dd): ");
         String dateStr = scanner.nextLine();
-        Date date = Date.from(java.time.LocalDate.parse(dateStr).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(LocalDate.parse(dateStr).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         System.out.print("Artista: ");
         String artista = scanner.nextLine();
 
         try {
             RelatorioModel relatorio = showServices.criarRelatorio(date, artista);
-            System.out.println("Relatório criado com sucesso: " + relatorio);
+            System.out.println("Relatório criado com sucesso:");
+            System.out.println("Ingressos Meia Entrada: " + relatorio.getNumIngressoMeia());
+            System.out.println("Ingressos Normal: " + relatorio.getNumIngressoNormal());
+            System.out.println("Ingressos VIP: " + relatorio.getNumIngressoVip());
+            System.out.println("Valor Total: " + relatorio.getValorTotal());
+            System.out.println("Status: " + relatorio.getStatus());
         } catch (Exception e) {
             System.out.println("Erro ao criar relatório: " + e.getMessage());
         }
