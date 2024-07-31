@@ -16,23 +16,53 @@ public class RelatorioModelTest {
 
     @Test
     public void testConstructor() {
-        assertNull(relatorio.getNumIngresso());
+        assertNull(relatorio.getNumIngressoMeia());
+        assertNull(relatorio.getNumIngressoNormal());
+        assertNull(relatorio.getNumIngressoVip());
         assertNull(relatorio.getValorTotal());
         assertNull(relatorio.getStatus());
     }
 
     @Test
-    public void testGetSetNumIngresso() {
+    public void testGetSetNumIngressoMeia() {
         Integer numIngresso = 5;
-        relatorio.setNumIngresso(numIngresso);
-        assertEquals(numIngresso, relatorio.getNumIngresso());
+        relatorio.setNumIngressoMeia(numIngresso);
+        assertEquals(numIngresso, relatorio.getNumIngressoMeia());
 
-        relatorio.setNumIngresso(null);
-        assertNull(relatorio.getNumIngresso());
+        relatorio.setNumIngressoMeia(null);
+        assertNull(relatorio.getNumIngressoMeia());
 
         numIngresso = -1;
-        relatorio.setNumIngresso(numIngresso);
-        assertEquals(numIngresso, relatorio.getNumIngresso());
+        relatorio.setNumIngressoMeia(numIngresso);
+        assertEquals(numIngresso, relatorio.getNumIngressoMeia());
+    }
+
+    @Test
+    public void testGetSetNumIngressoNormal() {
+        Integer numIngresso = 5;
+        relatorio.setNumIngressoNormal(numIngresso);
+        assertEquals(numIngresso, relatorio.getNumIngressoNormal());
+
+        relatorio.setNumIngressoNormal(null);
+        assertNull(relatorio.getNumIngressoNormal());
+
+        numIngresso = -1;
+        relatorio.setNumIngressoNormal(numIngresso);
+        assertEquals(numIngresso, relatorio.getNumIngressoNormal());
+    }
+
+    @Test
+    public void testGetSetNumIngressoVip() {
+        Integer numIngresso = 5;
+        relatorio.setNumIngressoVip(numIngresso);
+        assertEquals(numIngresso, relatorio.getNumIngressoVip());
+
+        relatorio.setNumIngressoVip(null);
+        assertNull(relatorio.getNumIngressoVip());
+
+        numIngresso = -1;
+        relatorio.setNumIngressoVip(numIngresso);
+        assertEquals(numIngresso, relatorio.getNumIngressoVip());
     }
 
     @Test

@@ -73,6 +73,45 @@ public class ShowServices {
     }
 
     public RelatorioModel criarRelatorio(Date date, String artista) {
-        return null;
+        ShowModel showModel = showRepository.findById(date, artista).orElseThrow(() -> new IllegalArgumentException("Show não encontrado"));
+
+        RelatorioModel relatorio = new RelatorioModel();
+        Double valorTotal = 0.00;
+        int totalIngressosVendidoNormal = 0;
+        int totalIngressosVendidoMeia = 0;
+        int totalIngressosVendidoVip = 0;
+        for (LoteModel loteModel : showModel.getLotes()) {
+            for (IngressoModel ingressoModel : loteModel.getIngressos()) {
+                if (ingressoModel.isVendido()) {
+                    switch (ingressoModel.getTipoIngresso()){
+                        case VIP:
+                            totalIngressosVendidoVip++;
+                            break;
+                        case MEIA_ENTRADA:
+                            totalIngressosVendidoMeia++;
+                            break;
+                        case NORMAL:
+                            totalIngressosVendidoNormal++;
+                            break;
+                    }
+                    valorTotal += ingressoModel.getValor();
+                }
+            }
+        }
+
+        relatorio.setNumIngressoMeia(totalIngressosVendidoMeia);
+        relatorio.setNumIngressoNormal(totalIngressosVendidoNormal);
+        relatorio.setNumIngressoVip(totalIngressosVendidoVip);
+        relatorio.setValorTotal(valorTotal);
+        if (valorTotal < showModel.getDespesasInfra() + showModel.getCache())
+            relatorio.setStatus(StatusEnum.PREJUÍZO);
+        else if (valorTotal > showModel.getDespesasInfra() + showModel.getCache()){
+            relatorio.setStatus(StatusEnum.LUCRO);
+        }
+        else {
+            relatorio.setStatus(StatusEnum.ESTÁVEL);
+        }
+
+        return relatorio;
     }
 }

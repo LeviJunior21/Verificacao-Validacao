@@ -289,11 +289,45 @@ public class ShowServicesTest {
     @Nested
     class CriarRelatorio{
         @Test
-        public void testCriarRelatorioComIngressosDisponiveis() {
+        public void testCriarRelatorioComPrejuizo() {
             Date data = new Date();
             String artista = "Artista Teste";
             Double cache = 1000.0;
             Double totalDespesas = 2000.0;
+            Integer quantLotes = 1;
+            Integer quantIngressosPorLote = 100;
+            Double precoNormal = 10.0;
+            Boolean isDataEspecial = false;
+            Double descontoLote = 0.;
+            Double vip = 0.30;
+
+            // Cria o show
+            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+
+            ShowModel show = showRepository.findById(data, artista).get();
+            LoteModel lote = show.getLotes().getFirst();
+            for (int i = 0; i < 10; i++) {
+                // Compra um ingresso
+                showServices.comprarIngresso(data, artista, lote.getId());
+            }
+
+            // Cria o relatório
+            RelatorioModel relatorio = showServices.criarRelatorio(data, artista);
+
+            assertNotNull(relatorio);
+            assertEquals(10, relatorio.getNumIngressoVip());
+            assertEquals(0, relatorio.getNumIngressoMeia());
+            assertEquals(0, relatorio.getNumIngressoNormal());
+            assertEquals(200.0, relatorio.getValorTotal());
+            assertEquals(StatusEnum.PREJUÍZO, relatorio.getStatus());
+        }
+
+        @Test
+        public void testCriarRelatorioComIngressosComLucro() {
+            Date data = new Date();
+            String artista = "Artista Teste";
+            Double cache = 10.0;
+            Double totalDespesas = 2.0;
             Integer quantLotes = 1;
             Integer quantIngressosPorLote = 10;
             Double precoNormal = 10.0;
@@ -315,9 +349,45 @@ public class ShowServicesTest {
             RelatorioModel relatorio = showServices.criarRelatorio(data, artista);
 
             assertNotNull(relatorio);
-            assertEquals(quantIngressosPorLote, relatorio.getNumIngresso());
-            assertEquals(quantIngressosPorLote * precoNormal, relatorio.getValorTotal());
+            assertEquals(3, relatorio.getNumIngressoVip());
+            assertEquals(1, relatorio.getNumIngressoMeia());
+            assertEquals(6, relatorio.getNumIngressoNormal());
+            assertEquals(125.0, relatorio.getValorTotal());
             assertEquals(StatusEnum.LUCRO, relatorio.getStatus());
+        }
+
+        @Test
+        public void testCriarRelatorioComIngressosComEquilibrio() {
+            Date data = new Date();
+            String artista = "Artista Teste";
+            Double cache = 100.0;
+            Double totalDespesas = 25.0;
+            Integer quantLotes = 1;
+            Integer quantIngressosPorLote = 10;
+            Double precoNormal = 10.0;
+            Boolean isDataEspecial = false;
+            Double descontoLote = 0.;
+            Double vip = 0.30;
+
+            // Cria o show
+            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+
+            ShowModel show = showRepository.findById(data, artista).get();
+            LoteModel lote = show.getLotes().getFirst();
+            for (int i = 0; i < 10; i++) {
+                // Compra um ingresso
+                showServices.comprarIngresso(data, artista, lote.getId());
+            }
+
+            // Cria o relatório
+            RelatorioModel relatorio = showServices.criarRelatorio(data, artista);
+
+            assertNotNull(relatorio);
+            assertEquals(3, relatorio.getNumIngressoVip());
+            assertEquals(1, relatorio.getNumIngressoMeia());
+            assertEquals(6, relatorio.getNumIngressoNormal());
+            assertEquals(125.0, relatorio.getValorTotal());
+            assertEquals(StatusEnum.ESTÁVEL, relatorio.getStatus());
         }
 
         @Test
@@ -340,7 +410,9 @@ public class ShowServicesTest {
             RelatorioModel relatorio = showServices.criarRelatorio(data, artista);
 
             assertNotNull(relatorio);
-            assertEquals(0, relatorio.getNumIngresso());
+            assertEquals(0, relatorio.getNumIngressoVip());
+            assertEquals(0, relatorio.getNumIngressoMeia());
+            assertEquals(0, relatorio.getNumIngressoNormal());
             assertEquals(0.0, relatorio.getValorTotal());
             assertEquals(StatusEnum.PREJUÍZO, relatorio.getStatus());
         }
