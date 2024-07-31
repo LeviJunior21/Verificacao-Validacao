@@ -195,7 +195,7 @@ public class ShowServicesTest {
             IngressoModel ingresso = lote.getIngressos().getFirst();
 
             // Compra um ingresso
-            IngressoModel comprado = showServices.comprarIngresso(data, artista, lote.getId());
+            IngressoModel comprado = showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP);
 
             assertNotNull(comprado);
             assertEquals(ingresso, comprado);
@@ -223,12 +223,12 @@ public class ShowServicesTest {
             LoteModel lote = show.getLotes().getFirst();
             for (int i = 0; i < 10; i++) {
                 // Compra um ingresso
-                showServices.comprarIngresso(data, artista, lote.getId());
+                showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP);
             }
 
 
             // Tenta comprar um ingresso
-            Exception exception = assertThrows(IllegalStateException.class, () -> showServices.comprarIngresso(data, artista, lote.getId()));
+            Exception exception = assertThrows(IllegalStateException.class, () -> showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP));
 
             assertEquals("Nenhum ingresso disponível para o lote", exception.getMessage());
         }
@@ -254,7 +254,7 @@ public class ShowServicesTest {
             LoteModel lote = show.getLotes().getFirst();
 
             // Tenta comprar um ingresso
-            Exception exception = assertThrows(IllegalStateException.class, () -> showServices.comprarIngresso(data, artista, lote.getId()));
+            Exception exception = assertThrows(IllegalStateException.class, () -> showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP));
 
             assertEquals("Nenhum ingresso disponível para o lote", exception.getMessage());
         }
@@ -279,7 +279,7 @@ public class ShowServicesTest {
 
             // Tenta comprar um ingresso de um lote inexistente
             Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-                showServices.comprarIngresso(data, artista, 999L); // ID de lote inexistente
+                showServices.comprarIngresso(data, artista, 999L, TipoIngressoEnum.VIP); // ID de lote inexistente
             });
 
             assertEquals("Lote não encontrado", exception.getMessage());
@@ -308,7 +308,7 @@ public class ShowServicesTest {
             LoteModel lote = show.getLotes().getFirst();
             for (int i = 0; i < 10; i++) {
                 // Compra um ingresso
-                showServices.comprarIngresso(data, artista, lote.getId());
+                showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP);
             }
 
             // Cria o relatório
@@ -342,7 +342,7 @@ public class ShowServicesTest {
             LoteModel lote = show.getLotes().getFirst();
             for (int i = 0; i < 10; i++) {
                 // Compra um ingresso
-                showServices.comprarIngresso(data, artista, lote.getId());
+                showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP);
             }
 
             // Cria o relatório
@@ -376,7 +376,7 @@ public class ShowServicesTest {
             LoteModel lote = show.getLotes().getFirst();
             for (int i = 0; i < 10; i++) {
                 // Compra um ingresso
-                showServices.comprarIngresso(data, artista, lote.getId());
+                showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP);
             }
 
             // Cria o relatório

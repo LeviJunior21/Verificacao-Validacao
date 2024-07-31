@@ -50,7 +50,7 @@ public class ShowServices {
         showRepository.save(showModel);
     }
 
-    public IngressoModel comprarIngresso(Date date, String artista, Long idLote) {
+    public IngressoModel comprarIngresso(Date date, String artista, Long idLote, TipoIngressoEnum vip) {
         ShowModel showModel = showRepository.findById(date, artista).orElseThrow();
 
         LoteModel lote = showModel.getLotes().stream()
