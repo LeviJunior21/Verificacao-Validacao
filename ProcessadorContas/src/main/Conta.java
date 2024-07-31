@@ -3,10 +3,10 @@ package main;
 import java.util.Date;
 
 public class Conta {
-	private String codigoConta;
-	private Date data;
-	private Double valorPago;
-	private String tipoPagamento;
+	private final String codigoConta;
+	private final Date data;
+	private final Double valorPago;
+	private final TipoPagamento tipoPagamento;
 	
 	/**
 	 * Conta da fatura do usuário.
@@ -16,7 +16,7 @@ public class Conta {
 	 * @param valorPago - Valor pago na compra. 
 	 * @param tipoPagamento - Tipo de pagamento da compra. 
 	 */
-	public Conta(String codigoConta, Date data, double valorPago, String tipoPagamento) {
+	public Conta(String codigoConta, Date data, double valorPago, TipoPagamento tipoPagamento) {
 		this.codigoConta = codigoConta;
 		this.data = data;
 		this.valorPago = valorPago;
@@ -55,7 +55,7 @@ public class Conta {
 	 * 
 	 * @param Retorna o tipo de pagamento realizado.
 	 */
-	public String getTipoPagamento() {
+	public TipoPagamento getTipoPagamento() {
 		return this.tipoPagamento;
 	}
 }

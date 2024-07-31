@@ -3,23 +3,23 @@ package main;
 import java.util.Date;
 
 public class Fatura {
-	private Date dataVencimento;
-	private Double valorFatura;
-	private String nomeUsuario;
-	private String status;
+	private final Date dataVencimento;
+	private final Double valorFatura;
+	private final String nomeUsuario;
+	private StatusPagamento statusPagamento;
 	
 	/**
 	 * Fatura do cliente.
 	 * 
 	 * @param dataVencimento - Data de vencimento da fatura.
-	 * @param i - Valor da fatura.
+	 * @param valorFatura - Valor da fatura.
 	 * @param nomeUsuario - Nome do usuário. 
 	 */
 	public Fatura(Date dataVencimento, Double valorFatura, String nomeUsuario) {
 		this.dataVencimento = dataVencimento;
 		this.valorFatura = valorFatura;
 		this.nomeUsuario = nomeUsuario;
-		this.status = "PENDENTE";
+		this.statusPagamento = StatusPagamento.PENDENTE;
 	}
 	
 	/**
@@ -54,8 +54,8 @@ public class Fatura {
 	 * 
 	 * @return Retorna o status da fatura. 
 	 */
-	public String getStatus() {
-		return this.status;
+	public StatusPagamento getStatusPagamento() {
+		return this.statusPagamento;
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class Fatura {
 	 * 
 	 * @param status - Novo status da Fatura.
 	 */
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatus(StatusPagamento statusPagamento) {
+		this.statusPagamento = statusPagamento;
 	}
 }

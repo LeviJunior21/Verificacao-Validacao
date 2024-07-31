@@ -25,8 +25,6 @@ public class ProcessadorContas {
 		}
 		
 		validarPagamento(valorTotalPagar, fatura);
-		
-		System.out.println(fatura.getStatus());
 	}
 	
 	/**
@@ -39,9 +37,9 @@ public class ProcessadorContas {
 	 */
 	private void validarPagamento(Double valorTotalPagar, Fatura fatura) {
 		if (valorTotalPagar >= fatura.getValorFatura()) {
-			fatura.setStatus("PAGA");
+			fatura.setStatus(StatusPagamento.PAGA);
 		} else {
-			fatura.setStatus("PENDENTE");
+			fatura.setStatus(StatusPagamento.PENDENTE);
 		}
 	}
 	
@@ -57,7 +55,7 @@ public class ProcessadorContas {
 	 * @return - Retorna um valor booleano, se o pagamento é válido (true) ou não (false). 
 	 */
 	private boolean pagamentoValido(Pagamento pagamento, Date vencimentoFatura) {
-		if (pagamento.getTipoPagamento().equals("CARTAO_CREDITO")) {
+		if (pagamento.getTipoPagamento().equals(TipoPagamento.CARTAO_CREDITO)) {
 			Long diasEmSegundos = Math.abs(vencimentoFatura.getTime() - pagamento.getDataPagamento().getTime());
 			Long dias = diasEmSegundos / (1000 * 60 * 60 * 24);
 			
@@ -79,7 +77,7 @@ public class ProcessadorContas {
 	private Pagamento realizarPagamento(Conta conta, Date dataPagamento) {		
 		Double valorPago = conta.getValorPago();
 		
-		if (conta.getTipoPagamento().equals("BOLETO")) {
+		if (conta.getTipoPagamento().equals(TipoPagamento.BOLETO)) {
 			if (dataPagamento.after(conta.getData())) {
 				valorPago *= 0.1;
 			}

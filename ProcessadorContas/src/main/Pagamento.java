@@ -3,9 +3,9 @@ package main;
 import java.util.Date;
 
 public class Pagamento {
-	private Double valorPago;
-	private Date dataPagamento;
-	private String tipoPagamento;
+	private final Double valorPago;
+	private final Date dataPagamento;
+	private final TipoPagamento tipoPagamento;
 	
 	/**
 	 * Pagamento da conta.
@@ -14,7 +14,7 @@ public class Pagamento {
 	 * @param dataPagamento - Data de pagamento da conta.
 	 * @param tipoPagamento - Tipo de pagamento da conta. 
 	 */
-	public Pagamento(Double valorPago, Date dataPagamento, String tipoPagamento) {
+	public Pagamento(Double valorPago, Date dataPagamento, TipoPagamento tipoPagamento) {
 		this.valorPago = valorPago;
 		this.dataPagamento = dataPagamento;
 		this.tipoPagamento = tipoPagamento;
@@ -43,7 +43,7 @@ public class Pagamento {
 	 * 
 	 * @return Retorna o tipo de pagamento da conta. 
 	 */
-	public String getTipoPagamento() {
+	public TipoPagamento getTipoPagamento() {
 		return this.tipoPagamento;
 	}
 }
