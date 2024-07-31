@@ -32,7 +32,7 @@ public class IngressoModel {
         this.tipoIngresso = tipoIngresso;
     }
 
-    public Boolean getVendido() {
+    public Boolean isVendido() {
         return isVendido;
     }
 

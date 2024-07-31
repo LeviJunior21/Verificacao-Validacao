@@ -53,7 +53,25 @@ public class ShowServices {
         showRepository.save(showModel);
     }
 
-    public IngressoModel comprarIngresso(Date data, String artista, long l) {
-        return null;
+    public IngressoModel comprarIngresso(Date date, String artista, Long idLote) {
+        ShowModel showModel = showRepository.findById(date, artista).orElseThrow();
+
+        LoteModel lote = showModel.getLotes().stream()
+                .filter(l -> l.getId().equals(idLote))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Lote não encontrado"));
+
+        if (lote.getIngressos().isEmpty()) {
+            throw new IllegalStateException("Nenhum ingresso disponível para o lote");
+        }
+
+        for (IngressoModel ingressoModel : lote.getIngressos()) {
+            if (!ingressoModel.isVendido()) {
+                ingressoModel.setVendido(true);
+                return ingressoModel;
+            }
+        }
+
+        throw new IllegalStateException("Nenhum ingresso disponível para o lote");
     }
 }

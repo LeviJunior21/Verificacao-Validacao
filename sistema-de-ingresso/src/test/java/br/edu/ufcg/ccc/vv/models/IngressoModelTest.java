@@ -17,7 +17,7 @@ public class IngressoModelTest {
     public void testConstructor() {
         assertNull(ingresso.getId());
         assertNull(ingresso.getTipoIngresso());
-        assertNull(ingresso.getVendido());
+        assertNull(ingresso.isVendido());
         assertNull(ingresso.getValor());
     }
 
@@ -45,13 +45,13 @@ public class IngressoModelTest {
     public void testGetSetVendido() {
         Boolean isVendido = true;
         ingresso.setVendido(isVendido);
-        assertEquals(isVendido, ingresso.getVendido());
+        assertEquals(isVendido, ingresso.isVendido());
 
         ingresso.setVendido(null);
-        assertNull(ingresso.getVendido());
+        assertNull(ingresso.isVendido());
 
         ingresso.setVendido(false);
-        assertFalse(ingresso.getVendido());
+        assertFalse(ingresso.isVendido());
     }
 
     @Test
