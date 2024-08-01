@@ -61,7 +61,7 @@ public class ProcessadorContas {
 	public boolean pagamentoValido(Pagamento pagamento, Date vencimentoFatura) {
 		if (pagamento.getTipoPagamento().equals(TipoPagamento.CARTAO_CREDITO)) {
 			Long diasEmSegundos = Math.abs(vencimentoFatura.getTime() - pagamento.getDataPagamento().getTime());
-			Long dias = diasEmSegundos / (1000 * 60 * 24);
+			Long dias = diasEmSegundos / (1000 * 60 * 60 * 24);
 			
 			return dias > 15;
 		} else {
