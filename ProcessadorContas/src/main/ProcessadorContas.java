@@ -39,7 +39,7 @@ public class ProcessadorContas {
 	 * @param valorTotalPagar - Valor total a pagar das contas.
 	 * @param fatura - Fatura a ser paga. 
 	 */
-	private void validarPagamento(Double valorTotalPagar, Fatura fatura) {
+	public void validarPagamento(Double valorTotalPagar, Fatura fatura) {
 		if (valorTotalPagar >= fatura.getValorFatura()) {
 			fatura.setStatus(StatusPagamento.PAGA);
 		} else {
