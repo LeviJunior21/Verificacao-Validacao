@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import main.Fatura;
 import main.ProcessadorContas;
 import main.StatusPagamento;
 import main.TipoPagamento;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProcessadorContasTest {
 	private ProcessadorContas processadorContas;
@@ -78,8 +80,24 @@ class ProcessadorContasTest {
 		
 		// Assert
 		assertAll(
-			() -> assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento()),
+			() -> assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento()),
 			() -> assertEquals(100.00, conta.getValorPago())
+		);
+	}
+	
+	@Test
+	void quandoPagamosUmaContaComFaturaInvalida() {
+		// Arrange
+		this.contas = new ArrayList<>();
+		Conta conta = new Conta("001", new Date(06, 06, 2024), 100.00, TipoPagamento.BOLETO);
+		this.contas.add(conta);
+		this.fatura = new Fatura(new Date(24, 07, 2024), -100.00, "Usuário 1");
+		
+		// Act
+		
+		// Assert
+		assertAll(
+			() -> assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento())
 		);
 	}
 }

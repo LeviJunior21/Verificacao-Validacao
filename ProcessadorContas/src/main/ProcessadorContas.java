@@ -12,6 +12,10 @@ public class ProcessadorContas {
 	 * @param contas - Contas pendentes. 
 	 */
 	public void processarContas(Fatura fatura, List<Conta> contas) {
+		if (fatura.getValorFatura() < 0) {
+			return;
+		}
+		
 		Double valorTotalPagar = 0.0;
 		
 		for (Conta conta: contas) {
