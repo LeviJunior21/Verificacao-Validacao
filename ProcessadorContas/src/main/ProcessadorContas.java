@@ -78,7 +78,7 @@ public class ProcessadorContas {
 	 * @param dataPagamento - Data de pagamento. 
 	 * @return - Retorna o pagamento realizado para o boleto. 
 	 */
-	private Pagamento realizarPagamento(Conta conta, Date dataPagamento) {		
+	public Pagamento realizarPagamento(Conta conta, Date dataPagamento) {		
 		Double valorPago = conta.getValorPago();
 		
 		if (conta.getTipoPagamento().equals(TipoPagamento.BOLETO)) {
