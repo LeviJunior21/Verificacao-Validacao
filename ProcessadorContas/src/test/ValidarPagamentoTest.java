@@ -52,4 +52,18 @@ public class ValidarPagamentoTest {
         
         assertTrue(resultado, "Pagamento com boleto deve ser válido.");
     }
+    
+    @Test
+    public void testPagamentoValidoBoletoInvalido() {
+        ProcessadorContas processador = new ProcessadorContas();
+        
+        // Pagamento com boleto após a data de vencimento
+        Date dataPagamento = new Date(System.currentTimeMillis() + 1L * 24 * 60 * 60 * 1000); // 1 dia depois
+        Date vencimentoFatura = new Date();
+        Pagamento pagamento = new Pagamento(100.0, dataPagamento, TipoPagamento.BOLETO);
+        
+        boolean resultado = processador.pagamentoValido(pagamento, vencimentoFatura);
+        
+        assertFalse(resultado, "Pagamento com boleto deve ser inválido.");
+    }
 }
