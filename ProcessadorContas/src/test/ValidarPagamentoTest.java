@@ -24,4 +24,18 @@ public class ValidarPagamentoTest {
         
         assertTrue(resultado, "Pagamento com cartão de crédito deve ser válido.");
     }
+    
+    @Test
+    public void testPagamentoValidoCartaoCreditoInvalido() {
+        ProcessadorContas processador = new ProcessadorContas();
+        
+        // Pagamento com cartão de crédito 15 dias antes do vencimento da fatura
+        Date dataPagamento = new Date(System.currentTimeMillis() - 15L * 24 * 60 * 60 * 1000); // 15 dias antes
+        Date vencimentoFatura = new Date();
+        Pagamento pagamento = new Pagamento(100.0, dataPagamento, TipoPagamento.CARTAO_CREDITO);
+        
+        boolean resultado = processador.pagamentoValido(pagamento, vencimentoFatura);
+        
+        assertFalse(resultado, "Pagamento com cartão de crédito deve ser inválido.");
+    }
 }
