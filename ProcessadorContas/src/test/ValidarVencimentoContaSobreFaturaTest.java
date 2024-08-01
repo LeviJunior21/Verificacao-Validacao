@@ -1,15 +1,11 @@
 package test;
 
 import org.junit.jupiter.api.Test;
-
 import main.Fatura;
 import main.ProcessadorContas;
 import main.StatusPagamento;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Date;
-
 import org.junit.jupiter.api.BeforeEach;
 
 public class ValidarVencimentoContaSobreFaturaTest {

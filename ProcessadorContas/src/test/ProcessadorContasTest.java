@@ -1,21 +1,16 @@
 package test;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import main.Conta;
 import main.Fatura;
 import main.ProcessadorContas;
 import main.StatusPagamento;
 import main.TipoPagamento;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProcessadorContasTest {
 	private ProcessadorContas processadorContas;

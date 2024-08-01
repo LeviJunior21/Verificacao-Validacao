@@ -1,18 +1,15 @@
 package test;
 
 import org.junit.jupiter.api.Test;
-
 import main.Conta;
 import main.Pagamento;
 import main.ProcessadorContas;
 import main.TipoPagamento;
-
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Date;
 
 public class ProcessarPagamentoTest {
-
     private ProcessadorContas processadorContas;
     private Date dataPagamento;
 
