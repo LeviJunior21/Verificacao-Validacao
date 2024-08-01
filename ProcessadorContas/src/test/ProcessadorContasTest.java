@@ -26,9 +26,9 @@ class ProcessadorContasTest {
 	void setUp() {
 		this.processadorContas = new ProcessadorContas();
 		this.contas = new ArrayList<>();
-		this.contas.add(new Conta("001", new Date(23, 07, 2024), 100.00, TipoPagamento.CARTAO_CREDITO));
+		this.contas.add(new Conta("001", new Date(2024, 07, 24), 100.00, TipoPagamento.CARTAO_CREDITO));
 
-		this.fatura = new Fatura(new Date(24, 07, 2024), 100.00, "Usuário 1");
+		this.fatura = new Fatura(new Date(2024, 07, 24), 100.00, "Usuário 1");
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ class ProcessadorContasTest {
 	void quandoPagamosUmaContaDepoisDoPrazoComoBoleto() {
 		// Arrange
 		this.contas = new ArrayList<>();
-		Conta conta = new Conta("001", new Date(06, 06, 2024), 100.00, TipoPagamento.BOLETO);
+		Conta conta = new Conta("001", new Date(2024, 06, 10), 100.00, TipoPagamento.BOLETO);
 		this.contas.add(conta);
 		
 		// Act
@@ -80,7 +80,7 @@ class ProcessadorContasTest {
 		
 		// Assert
 		assertAll(
-			() -> assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento()),
+			() -> assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento()),
 			() -> assertEquals(100.00, conta.getValorPago())
 		);
 	}
@@ -91,7 +91,7 @@ class ProcessadorContasTest {
 		this.contas = new ArrayList<>();
 		Conta conta = new Conta("001", new Date(06, 06, 2024), 100.00, TipoPagamento.BOLETO);
 		this.contas.add(conta);
-		this.fatura = new Fatura(new Date(24, 07, 2024), -100.00, "Usuário 1");
+		this.fatura = new Fatura(new Date(), -100.00, "Usuário 1");
 		
 		// Act
 		this.processadorContas.processarContas(fatura, contas);
@@ -101,4 +101,36 @@ class ProcessadorContasTest {
 			() -> assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento())
 		);
 	}
+	
+	@Test
+	void quandoPagamosUmBoletoJaVencido() {
+		// Arrange
+		this.contas = new ArrayList<>();
+		Conta conta = new Conta("001", new Date(2024, 07, 01), 100.00, TipoPagamento.BOLETO);
+		this.contas.add(conta);
+		this.fatura = new Fatura(new Date(), -100.00, "Usuário 1");
+				
+		// Act
+		this.processadorContas.processarContas(fatura, contas);
+				
+		// Assert
+		assertAll(
+			() -> assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento())
+		);	
+	}
+	
+	@Test
+    void quandoPagamentoValidoComBoletoEAtraso() {
+		// Arrange
+        Date dataPagamento = new Date(2024, 8, 1);
+        
+        Conta contaBoleto = new Conta("002", dataPagamento, 100.00, TipoPagamento.BOLETO);
+        this.contas.add(contaBoleto);
+
+        // Act
+        this.processadorContas.processarContas(fatura, contas);
+        
+        // Assert
+        assertEquals(StatusPagamento.PAGA, this.fatura.getStatusPagamento());
+    }
 }

@@ -83,7 +83,7 @@ public class ProcessadorContas {
 		
 		if (conta.getTipoPagamento().equals(TipoPagamento.BOLETO)) {
 			if (dataPagamento.after(conta.getData())) {
-				valorPago *= 0.1;
+				valorPago *= 1.1;
 			}
 		}
 		
