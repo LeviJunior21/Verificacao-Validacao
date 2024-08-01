@@ -24,7 +24,7 @@ public class ProcessarPagamentoTest {
 
     @Test
     void testRealizarPagamentoBoletoPagoAposVencimento() {
-        Date dataVencimento = new Date(dataPagamento.getTime() - (1000 * 60 * 60 * 24 * 1));
+        Date dataVencimento = new Date(dataPagamento.getTime() - (1000 * 60 * 60 * 24 * 1)); // 1 dia atrás
         Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.BOLETO);
         
         Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
@@ -44,7 +44,7 @@ public class ProcessarPagamentoTest {
 
     @Test
     void testRealizarPagamentoBoletoPagoAntesDoVencimento() {
-        Date dataVencimento = new Date(dataPagamento.getTime() + (1000 * 60 * 60 * 24 * 1));
+        Date dataVencimento = new Date(dataPagamento.getTime() + (1000 * 60 * 60 * 24 * 1)); // 1 dia à frente
         Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.BOLETO);
         
         Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
@@ -56,4 +56,17 @@ public class ProcessarPagamentoTest {
         assertEquals(TipoPagamento.BOLETO, pagamento.getTipoPagamento(), "O tipo de pagamento deve ser BOLETO");
     }
 
+    @Test
+    void testRealizarPagamentoCartaoDeCreditoComoTipoDePagamento() {
+        Date dataVencimento = new Date(); // Data atual
+        Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.CARTAO_CREDITO);
+        
+        Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
+        
+        assertNotNull(pagamento, "Pagamento não deve ser nulo");
+        double valorEsperado = 100.00;
+        double margemErro = 0.01;
+        assertEquals(valorEsperado, pagamento.getValorPago(), margemErro, "O valor pago deve ser o mesmo da conta, sem acréscimo");
+        assertEquals(TipoPagamento.CARTAO_CREDITO, pagamento.getTipoPagamento(), "O tipo de pagamento deve ser CARTAO_CREDITO");
+    }
 }
