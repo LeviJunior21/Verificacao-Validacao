@@ -49,7 +49,7 @@ public class ProcessadorContas {
 	
 	/**
 	 * Validador de data de expiração do pagamento da fatura para cada tipo de pagamento.
-	 * Se o tipo de pagamento for CARTÃO DE CRÉDITO, caso a data da conta seja de pelo menos 15 dias anteriores a 
+	 * Se o tipo de pagamento for CARTÃO DE CRÉDITO, caPENDENTEso a data da conta seja de pelo menos 15 dias anteriores a 
 	 * data da compra, então o valor do pagamento é incluido (retorna true), caso contrário não é incluido (retorna false).
 	 * 
 	 * Além disso, checamos se a data de pagamento da conta ultrapassou (true) ou não (false) a data de pagamento da fatura. 
@@ -58,12 +58,12 @@ public class ProcessadorContas {
 	 * @param dataFatura - Vencimento da fatura. 
 	 * @return - Retorna um valor booleano, se o pagamento é válido (true) ou não (false). 
 	 */
-	private boolean pagamentoValido(Pagamento pagamento, Date vencimentoFatura) {
+	public boolean pagamentoValido(Pagamento pagamento, Date vencimentoFatura) {
 		if (pagamento.getTipoPagamento().equals(TipoPagamento.CARTAO_CREDITO)) {
 			Long diasEmSegundos = Math.abs(vencimentoFatura.getTime() - pagamento.getDataPagamento().getTime());
-			Long dias = diasEmSegundos / (1000 * 60 * 60 * 24);
+			Long dias = diasEmSegundos / (1000 * 60 * 24);
 			
-			return dias >= 15;
+			return dias > 15;
 		} else {
 			return !pagamento.getDataPagamento().after(vencimentoFatura);
 		}

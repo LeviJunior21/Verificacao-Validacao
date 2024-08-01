@@ -133,4 +133,14 @@ class ProcessadorContasTest {
         // Assert
         assertEquals(StatusPagamento.PAGA, this.fatura.getStatusPagamento());
     }
+	
+	@Test
+	void quandoRealizamosUmPagamentoDeUmaContaForaDoPrazpPagaComTransferenciaBancaria() {
+		Conta contaBoleto = new Conta("002", new Date(2024, 2, 1), 100.00, TipoPagamento.BOLETO);
+        this.contas.add(contaBoleto);
+        
+        this.processadorContas.processarContas(fatura, contas);
+
+        assertEquals(StatusPagamento.PAGA, this.fatura.getStatusPagamento());
+	}
 }
