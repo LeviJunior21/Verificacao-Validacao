@@ -24,15 +24,6 @@ public class Conta {
 	}
 
 	/**
-	 * Retorna o código da compra do usuário.
-	 * 
-	 * @return - Retorna o código da conta.
-	 */
-	public String getCodigoConta() {
-		return this.codigoConta;
-	}
-	
-	/**
 	 * Retorna a data da compra feita pelo usuário
 	 * .
 	 * @return - Retorna a data da compra.

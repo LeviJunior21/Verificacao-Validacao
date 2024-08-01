@@ -40,14 +40,6 @@ public class Fatura {
 		return this.valorFatura;
 	}
 	
-	/**
-	 * Retorna o nome do usuário que irá pagar a fatura.
-	 * 
-	 * @return Retorna o nome do usuário.
-	 */
-	public String getNomeUsuario() {
-		return this.nomeUsuario;
-	}
 	
 	/**
 	 * Retorna o status da fatura como PENDENTE ou PAGA.
