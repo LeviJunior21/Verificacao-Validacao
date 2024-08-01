@@ -24,18 +24,19 @@ public class ProcessarPagamentoTest {
 
     @Test
     void testRealizarPagamentoBoletoPagoAposVencimento() {
+    	// Arrange
         Date dataVencimento = new Date(dataPagamento.getTime() - (1000 * 60 * 60 * 24 * 1)); // 1 dia atrás
         Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.BOLETO);
-        
+
+        // Act 
         Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
         
+        // Assert
         assertNotNull(pagamento, "Pagamento não deve ser nulo");
         
-        // Valor esperado com acréscimo de 10% devido ao pagamento após o vencimento
         Double valorEsperado = 110.00;
         Double valorPago = pagamento.getValorPago();
         
-        // Margem de erro para comparação de valores de ponto flutuante
         double margemErro = 0.01;
         
         assertEquals(valorEsperado, valorPago, margemErro, "O valor pago deve ter 10% de acréscimo");
@@ -44,11 +45,14 @@ public class ProcessarPagamentoTest {
 
     @Test
     void testRealizarPagamentoBoletoPagoAntesDoVencimento() {
-        Date dataVencimento = new Date(dataPagamento.getTime() + (1000 * 60 * 60 * 24 * 1)); // 1 dia à frente
+    	// Arrange
+        Date dataVencimento = new Date(dataPagamento.getTime() + (1000 * 60 * 60 * 24 * 1));
         Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.BOLETO);
         
+        // Act
         Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
         
+        // Assert
         assertNotNull(pagamento, "Pagamento não deve ser nulo");
         double valorEsperado = 100.00;
         double margemErro = 0.01;
@@ -58,11 +62,14 @@ public class ProcessarPagamentoTest {
 
     @Test
     void testRealizarPagamentoCartaoDeCreditoComoTipoDePagamento() {
-        Date dataVencimento = new Date(); // Data atual
+    	// Arrange
+        Date dataVencimento = new Date();
         Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.CARTAO_CREDITO);
         
+        // Act
         Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
         
+        // Assert
         assertNotNull(pagamento, "Pagamento não deve ser nulo");
         double valorEsperado = 100.00;
         double margemErro = 0.01;
@@ -72,11 +79,14 @@ public class ProcessarPagamentoTest {
     
     @Test
     void testRealizarPagamentoTransferenciaComoTipoDePagamento() {
+    	// Arrange
         Date dataVencimento = new Date(); // Data atual
         Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.TRANSFERENCIA_BANCARIA);
         
+        // Act
         Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
         
+        // Assert
         assertNotNull(pagamento, "Pagamento não deve ser nulo");
         double valorEsperado = 100.00;
         double margemErro = 0.01;

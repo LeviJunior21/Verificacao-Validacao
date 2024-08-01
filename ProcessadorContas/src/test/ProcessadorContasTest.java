@@ -136,11 +136,14 @@ class ProcessadorContasTest {
 	
 	@Test
 	void quandoRealizamosUmPagamentoDeUmaContaForaDoPrazpPagaComTransferenciaBancaria() {
+		// Arrange
 		Conta contaBoleto = new Conta("002", new Date(this.fatura.getDataVencimento().getTime() - (1000 * 60 * 60 * 24 * 20)), 100.00, TipoPagamento.BOLETO);
         this.contas.add(contaBoleto);
         
+        // Act
         this.processadorContas.processarContas(fatura, contas);
 
+        // Assert
         assertEquals(StatusPagamento.PAGA, this.fatura.getStatusPagamento());
 	}
 }
