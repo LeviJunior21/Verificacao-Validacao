@@ -69,4 +69,18 @@ public class ProcessarPagamentoTest {
         assertEquals(valorEsperado, pagamento.getValorPago(), margemErro, "O valor pago deve ser o mesmo da conta, sem acréscimo");
         assertEquals(TipoPagamento.CARTAO_CREDITO, pagamento.getTipoPagamento(), "O tipo de pagamento deve ser CARTAO_CREDITO");
     }
+    
+    @Test
+    void testRealizarPagamentoTransferenciaComoTipoDePagamento() {
+        Date dataVencimento = new Date(); // Data atual
+        Conta conta = new Conta("001", dataVencimento, 100.00, TipoPagamento.TRANSFERENCIA_BANCARIA);
+        
+        Pagamento pagamento = processadorContas.realizarPagamento(conta, dataPagamento);
+        
+        assertNotNull(pagamento, "Pagamento não deve ser nulo");
+        double valorEsperado = 100.00;
+        double margemErro = 0.01;
+        assertEquals(valorEsperado, pagamento.getValorPago(), margemErro, "O valor pago deve ser o mesmo da conta, sem acréscimo");
+        assertEquals(TipoPagamento.TRANSFERENCIA_BANCARIA, pagamento.getTipoPagamento(), "O tipo de pagamento deve ser CARTAO_CREDITO");
+    }
 }
