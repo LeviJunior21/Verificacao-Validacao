@@ -106,7 +106,7 @@ class ProcessadorContasTest {
 	void quandoPagamosUmBoletoJaVencido() {
 		// Arrange
 		this.contas = new ArrayList<>();
-		Conta conta = new Conta("001", new Date(2024, 07, 01), 100.00, TipoPagamento.BOLETO);
+		Conta conta = new Conta("001", new Date(this.fatura.getDataVencimento().getTime() - (1000 * 60 * 60 * 24 * 20)), 100.00, TipoPagamento.BOLETO);
 		this.contas.add(conta);
 		this.fatura = new Fatura(new Date(), -100.00, "Usuário 1");
 				
@@ -122,7 +122,7 @@ class ProcessadorContasTest {
 	@Test
     void quandoPagamentoValidoComBoletoEAtraso() {
 		// Arrange
-        Date dataPagamento = new Date(2024, 8, 1);
+        Date dataPagamento = new Date(this.fatura.getDataVencimento().getTime() - (1000 * 60 * 60 * 24 * 20));
         
         Conta contaBoleto = new Conta("002", dataPagamento, 100.00, TipoPagamento.BOLETO);
         this.contas.add(contaBoleto);
@@ -136,7 +136,7 @@ class ProcessadorContasTest {
 	
 	@Test
 	void quandoRealizamosUmPagamentoDeUmaContaForaDoPrazpPagaComTransferenciaBancaria() {
-		Conta contaBoleto = new Conta("002", new Date(2024, 2, 1), 100.00, TipoPagamento.BOLETO);
+		Conta contaBoleto = new Conta("002", new Date(this.fatura.getDataVencimento().getTime() - (1000 * 60 * 60 * 24 * 20)), 100.00, TipoPagamento.BOLETO);
         this.contas.add(contaBoleto);
         
         this.processadorContas.processarContas(fatura, contas);

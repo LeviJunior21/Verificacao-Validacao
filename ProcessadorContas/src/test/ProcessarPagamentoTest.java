@@ -33,4 +33,5 @@ public class ProcessarPagamentoTest {
         assertEquals(110.00, pagamento.getValorPago(), "O valor pago deve ter 10% de acréscimo");
         assertEquals(TipoPagamento.BOLETO, pagamento.getTipoPagamento(), "O tipo de pagamento deve ser BOLETO");
     }
+
 }
