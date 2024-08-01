@@ -94,6 +94,7 @@ class ProcessadorContasTest {
 		this.fatura = new Fatura(new Date(24, 07, 2024), -100.00, "Usuário 1");
 		
 		// Act
+		this.processadorContas.processarContas(fatura, contas);
 		
 		// Assert
 		assertAll(
