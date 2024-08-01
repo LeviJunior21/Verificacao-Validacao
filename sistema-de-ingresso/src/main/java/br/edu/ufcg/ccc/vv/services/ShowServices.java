@@ -6,6 +6,7 @@ import br.edu.ufcg.ccc.vv.repository.ShowRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Serviço que gerencia operações relacionadas a shows.
@@ -41,36 +42,54 @@ public class ShowServices {
      * @param descontoLote o desconto aplicável a cada lote
      * @param vip a porcentagem de ingressos VIP
      */
-    public void criarShow(Date date, String artista, Double cache, Double totalDespesas, Integer quantLotes, Integer quantIngressosPorLote, Double precoNormal, Boolean isDataEspecial, Double descontoLote, Double vip) {
+    public void criarShow(Date date, String artista, Double cache, Double totalDespesas, Integer quantLotes,
+                          Integer quantIngressosPorLote, Double precoNormal, Boolean isDataEspecial,
+                          Double descontoLote, Double vip) {
+        List<LoteModel> loteModels = criarLotes(quantLotes, quantIngressosPorLote, precoNormal, descontoLote, vip);
+        if (isDataEspecial) {
+            totalDespesas *= 1.15;
+        }
+        ShowModel showModel = new ShowModel(date, artista, cache, totalDespesas, loteModels, isDataEspecial);
+        showRepository.save(showModel);
+    }
+
+    private List<LoteModel> criarLotes(Integer quantLotes, Integer quantIngressosPorLote, Double precoNormal,
+                                       Double descontoLote, Double vip) {
         List<LoteModel> loteModels = new ArrayList<>();
+        descontoLote = ajustarDesconto(descontoLote);
+
         for (int i = 0; i < quantLotes; i++) {
-            List<IngressoModel> ingressoModels = new ArrayList<>();
-            int expectedVip = (int) (quantIngressosPorLote * vip);
-            int expectedMeiaEntrada = (int) (quantIngressosPorLote * 0.10);
-            int expectedNormal = quantIngressosPorLote - expectedVip - expectedMeiaEntrada;
-            for (int j = 0; j < expectedVip; j++) {
-                IngressoModel ingressoModel = new IngressoModel(currentIngressoId++, TipoIngressoEnum.VIP, false, precoNormal * 2);
-                ingressoModels.add(ingressoModel);
-            }
-            for (int j = 0; j < expectedMeiaEntrada; j++) {
-                IngressoModel ingressoModel = new IngressoModel(currentIngressoId++, TipoIngressoEnum.MEIA_ENTRADA, false, precoNormal * 0.5);
-                ingressoModels.add(ingressoModel);
-            }
-            for (int j = 0; j < expectedNormal; j++) {
-                IngressoModel ingressoModel = new IngressoModel(currentIngressoId++, TipoIngressoEnum.NORMAL, false, precoNormal);
-                ingressoModels.add(ingressoModel);
-            }
-            if (descontoLote > 25)
-                descontoLote = 25.0;
-            if (descontoLote < 0)
-                descontoLote = 0.0;
+            List<IngressoModel> ingressoModels = criarIngressos(quantIngressosPorLote, precoNormal, vip);
             LoteModel loteModel = new LoteModel(descontoLote, ingressoModels, loteId++);
             loteModels.add(loteModel);
         }
-        if (isDataEspecial)
-            totalDespesas = totalDespesas * 1.15;
-        ShowModel showModel = new ShowModel(date, artista, cache, totalDespesas, loteModels, isDataEspecial);
-        showRepository.save(showModel);
+        return loteModels;
+    }
+
+    private List<IngressoModel> criarIngressos(Integer quantIngressosPorLote, Double precoNormal, Double vip) {
+        List<IngressoModel> ingressoModels = new ArrayList<>();
+        int expectedVip = (int) (quantIngressosPorLote * vip);
+        int expectedMeiaEntrada = (int) (quantIngressosPorLote * 0.10);
+        int expectedNormal = quantIngressosPorLote - expectedVip - expectedMeiaEntrada;
+
+        adicionarIngressos(ingressoModels, expectedVip, TipoIngressoEnum.VIP, precoNormal * 2);
+        adicionarIngressos(ingressoModels, expectedMeiaEntrada, TipoIngressoEnum.MEIA_ENTRADA, precoNormal * 0.5);
+        adicionarIngressos(ingressoModels, expectedNormal, TipoIngressoEnum.NORMAL, precoNormal);
+
+        return ingressoModels;
+    }
+
+    private void adicionarIngressos(List<IngressoModel> ingressoModels, int quantidade, TipoIngressoEnum tipo, Double preco) {
+        for (int i = 0; i < quantidade; i++) {
+            IngressoModel ingressoModel = new IngressoModel(currentIngressoId++, tipo, false, preco);
+            ingressoModels.add(ingressoModel);
+        }
+    }
+
+    private Double ajustarDesconto(Double descontoLote) {
+        if (descontoLote > 25) return 25.0;
+        if (descontoLote < 0) return 0.0;
+        return descontoLote;
     }
 
     /**
@@ -84,25 +103,22 @@ public class ShowServices {
      * @throws IllegalStateException se não houver ingressos disponíveis ou se o ingresso solicitado não estiver disponível
      */
     public IngressoModel comprarIngresso(Date date, String artista, Long idLote, TipoIngressoEnum tipo) {
-        ShowModel showModel = showRepository.findById(date, artista).orElseThrow(() -> new IllegalArgumentException("Show não encontrado"));
+        ShowModel showModel = showRepository.findById(date, artista)
+                .orElseThrow(() -> new IllegalArgumentException("Show não encontrado"));
 
         LoteModel lote = showModel.getLotes().stream()
                 .filter(l -> l.getId().equals(idLote))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Lote não encontrado"));
 
-        if (lote.getIngressos().isEmpty()) {
-            throw new IllegalStateException("Nenhum ingresso disponível para o lote");
-        }
-
-        for (IngressoModel ingressoModel : lote.getIngressos()) {
-            if (!ingressoModel.isVendido() && (tipo == null || ingressoModel.getTipoIngresso().equals(tipo))) {
-                ingressoModel.setVendido(true);
-                return ingressoModel;
-            }
-        }
-
-        throw new IllegalStateException("Nenhum ingresso disponível para o lote");
+        return lote.getIngressos().stream()
+                .filter(ingresso -> !ingresso.isVendido() && (tipo == null || ingresso.getTipoIngresso().equals(tipo)))
+                .findFirst()
+                .map(ingresso -> {
+                    ingresso.setVendido(true);
+                    return ingresso;
+                })
+                .orElseThrow(() -> new IllegalStateException("Nenhum ingresso disponível para o lote"));
     }
 
     /**
@@ -114,39 +130,32 @@ public class ShowServices {
      * @throws IllegalArgumentException se o show não for encontrado
      */
     public RelatorioModel criarRelatorio(Date date, String artista) {
-        ShowModel showModel = showRepository.findById(date, artista).orElseThrow(() -> new IllegalArgumentException("Show não encontrado"));
+        ShowModel showModel = showRepository.findById(date, artista)
+                .orElseThrow(() -> new IllegalArgumentException("Show não encontrado"));
 
         RelatorioModel relatorio = new RelatorioModel();
         Double valorTotal = 0.00;
-        int totalIngressosVendidoNormal = 0;
-        int totalIngressosVendidoMeia = 0;
-        int totalIngressosVendidoVip = 0;
+        int[] totalIngressosVendidos = new int[TipoIngressoEnum.values().length];
+
         for (LoteModel loteModel : showModel.getLotes()) {
             for (IngressoModel ingressoModel : loteModel.getIngressos()) {
                 if (ingressoModel.isVendido()) {
-                    switch (ingressoModel.getTipoIngresso()) {
-                        case VIP:
-                            totalIngressosVendidoVip++;
-                            break;
-                        case MEIA_ENTRADA:
-                            totalIngressosVendidoMeia++;
-                            break;
-                        case NORMAL:
-                            totalIngressosVendidoNormal++;
-                            break;
-                    }
+                    TipoIngressoEnum tipo = ingressoModel.getTipoIngresso();
+                    totalIngressosVendidos[tipo.ordinal()]++;
                     valorTotal += ingressoModel.getValor();
                 }
             }
         }
 
-        relatorio.setNumIngressoMeia(totalIngressosVendidoMeia);
-        relatorio.setNumIngressoNormal(totalIngressosVendidoNormal);
-        relatorio.setNumIngressoVip(totalIngressosVendidoVip);
+        relatorio.setNumIngressoMeia(totalIngressosVendidos[TipoIngressoEnum.MEIA_ENTRADA.ordinal()]);
+        relatorio.setNumIngressoNormal(totalIngressosVendidos[TipoIngressoEnum.NORMAL.ordinal()]);
+        relatorio.setNumIngressoVip(totalIngressosVendidos[TipoIngressoEnum.VIP.ordinal()]);
         relatorio.setValorTotal(valorTotal);
-        if (valorTotal < showModel.getDespesasInfra() + showModel.getCache())
+
+        Double custoTotal = showModel.getDespesasInfra() + showModel.getCache();
+        if (valorTotal < custoTotal) {
             relatorio.setStatus(StatusEnum.PREJUÍZO);
-        else if (valorTotal > showModel.getDespesasInfra() + showModel.getCache()) {
+        } else if (valorTotal > custoTotal) {
             relatorio.setStatus(StatusEnum.LUCRO);
         } else {
             relatorio.setStatus(StatusEnum.ESTÁVEL);
