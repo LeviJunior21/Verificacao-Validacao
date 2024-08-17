@@ -45,7 +45,9 @@ public class ShowServices {
     public void criarShow(Date date, String artista, Double cache, Double totalDespesas, Integer quantLotes,
                           Integer quantIngressosPorLote, Double precoNormal, Boolean isDataEspecial,
                           Double descontoLote, Double vip) {
-        List<LoteModel> loteModels = criarLotes(quantLotes, quantIngressosPorLote, precoNormal, descontoLote, vip);
+        if (vip < 20 || vip > 30)
+            throw new IllegalArgumentException("Limites de VIP estão inválidos");
+        List<LoteModel> loteModels = criarLotes(quantLotes, quantIngressosPorLote, precoNormal, descontoLote, vip / 100);
         if (isDataEspecial) {
             totalDespesas *= 1.15;
         }

@@ -34,7 +34,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.00;
-            double vip = 0.30;
+            double vip = 30;
 
             // Execute o método criarShow
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -53,7 +53,7 @@ public class ShowServicesTest {
 
             // Verificar a distribuição dos ingressos
             int totalIngressos = lote.getIngressos().size();
-            int expectedVip = (int) (totalIngressos * vip);
+            int expectedVip = (int) (totalIngressos * vip / 100);
             int expectedMeiaEntrada = (int) (totalIngressos * 0.10);
             int expectedNormal = totalIngressos - expectedVip - expectedMeiaEntrada;
 
@@ -77,7 +77,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 30.; // Desconto acima do máximo permitido
-            Double vip = 0.30;
+            double vip = 30;
 
             // Execute o método criarShow
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -106,7 +106,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 10.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Execute o método criarShow
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -132,7 +132,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = true; // Data especial
             Double descontoLote = 10.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Execute o método criarShow
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -155,7 +155,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = -5.; // Desconto negativo
-            Double vip = 0.30;
+            double vip = 30;
 
             // Execute o método criarShow
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -184,7 +184,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -213,7 +213,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -244,7 +244,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -270,7 +270,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -299,7 +299,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -333,7 +333,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -367,7 +367,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -401,7 +401,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
