@@ -207,6 +207,7 @@ public class AnaliseValorLimiteDesconto {
             // Verificar o desconto
             assertEquals(descontoLote, lote.getDesconto());
         }
+
         @Test
         public void testCriarShowComDescontoAcimaDolimiteSuperior() {
             Date data = new Date();
@@ -237,13 +238,13 @@ public class AnaliseValorLimiteDesconto {
             Integer quantIngressosPorLote = 100;
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
-            Double descontoLote = 0.00;
-            double vip = -31;
+            Double descontoLote = -1.00;
+            double vip = 20;
             try {
                 showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
                 fail("Era esperado que isso não funcionasse");
             }catch (Exception e){
-                assertEquals("Limites de VIP estão inválidos", e.getMessage());
+                assertEquals("Desconto inválidos", e.getMessage());
             }
         }
     }
