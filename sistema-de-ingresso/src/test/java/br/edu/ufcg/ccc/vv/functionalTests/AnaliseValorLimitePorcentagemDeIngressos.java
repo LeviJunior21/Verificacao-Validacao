@@ -276,6 +276,26 @@ public class AnaliseValorLimitePorcentagemDeIngressos {
             assertEquals("Limites de VIP estão inválidos", e.getMessage());
         }
     }
+
+    @Test
+    public void testCriarShowComVIPNegativo() {
+        Date data = new Date();
+        String artista = "Artista Teste";
+        Double cache = 1000.0;
+        Double totalDespesas = 2000.0;
+        Integer quantLotes = 1;
+        Integer quantIngressosPorLote = 100;
+        Double precoNormal = 10.0;
+        Boolean isDataEspecial = false;
+        Double descontoLote = 0.00;
+        double vip = -31;
+        try {
+            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+            fail("Era esperado que isso não funcionasse");
+        }catch (Exception e){
+            assertEquals("Limites de VIP estão inválidos", e.getMessage());
+        }
+    }
 }
 class InMemoryShowRepository implements ShowRepository {
     private final Map<String, ShowModel> database = new HashMap<>();
