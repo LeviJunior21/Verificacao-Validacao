@@ -215,6 +215,67 @@ public class AnaliseValorLimitePorcentagemDeIngressos {
         assertEquals(expectedNormal, countNormal);
     }
 
+    @Test
+    public void testCriarShowComVipLimiteSuperior() {
+        Date data = new Date();
+        String artista = "Artista Teste";
+        Double cache = 1000.0;
+        Double totalDespesas = 2000.0;
+        Integer quantLotes = 1;
+        Integer quantIngressosPorLote = 100;
+        Double precoNormal = 10.0;
+        Boolean isDataEspecial = false;
+        Double descontoLote = 0.00;
+        double vip = 30;
+
+        // Execute o método criarShow
+        showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+
+        // Verificar se o show foi salvo corretamente
+        ShowModel show = showRepository.findById(data, artista).get();
+        assertNotNull(show);
+
+        List<LoteModel> lotes = show.getLotes();
+        assertEquals(quantLotes, lotes.size());
+        LoteModel lote = lotes.getFirst();
+        assertEquals(quantIngressosPorLote, lote.getIngressos().size());
+
+        // Verificar o desconto
+        assertEquals(descontoLote, lote.getDesconto());
+
+        // Verificar a distribuição dos ingressos
+        int totalIngressos = lote.getIngressos().size();
+        int expectedVip = (int) (totalIngressos * vip / 100);
+        int expectedMeiaEntrada = (int) (totalIngressos * 0.10);
+        int expectedNormal = totalIngressos - expectedVip - expectedMeiaEntrada;
+
+        long countVip = lote.getIngressos().stream().filter(i -> i.getTipoIngresso() == TipoIngressoEnum.VIP).count();
+        long countMeiaEntrada = lote.getIngressos().stream().filter(i -> i.getTipoIngresso() == TipoIngressoEnum.MEIA_ENTRADA).count();
+        long countNormal = lote.getIngressos().stream().filter(i -> i.getTipoIngresso() == TipoIngressoEnum.NORMAL).count();
+
+        assertEquals(expectedVip, countVip);
+        assertEquals(expectedMeiaEntrada, countMeiaEntrada);
+        assertEquals(expectedNormal, countNormal);
+    }
+    @Test
+    public void testCriarShowComVIPAcimaDolimiteSuperior() {
+        Date data = new Date();
+        String artista = "Artista Teste";
+        Double cache = 1000.0;
+        Double totalDespesas = 2000.0;
+        Integer quantLotes = 1;
+        Integer quantIngressosPorLote = 100;
+        Double precoNormal = 10.0;
+        Boolean isDataEspecial = false;
+        Double descontoLote = 0.00;
+        double vip = 31;
+        try {
+            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+            fail("Era esperado que isso não funcionasse");
+        }catch (Exception e){
+            assertEquals("Limites de VIP estão inválidos", e.getMessage());
+        }
+    }
 }
 class InMemoryShowRepository implements ShowRepository {
     private final Map<String, ShowModel> database = new HashMap<>();
