@@ -70,9 +70,12 @@ public class ShowServices {
 
     private List<IngressoModel> criarIngressos(Integer quantIngressosPorLote, Double precoNormal, Double vip) {
         List<IngressoModel> ingressoModels = new ArrayList<>();
-        int expectedVip = (int) (quantIngressosPorLote * vip);
-        int expectedMeiaEntrada = (int) (quantIngressosPorLote * 0.10);
-        int expectedNormal = quantIngressosPorLote - expectedVip - expectedMeiaEntrada;
+
+        int expectedVip = (int) Math.round(quantIngressosPorLote * vip);
+        int expectedMeiaEntrada = (int) Math.round(quantIngressosPorLote * 0.10);
+
+        int totalIngressos = expectedVip + expectedMeiaEntrada;
+        int expectedNormal = quantIngressosPorLote - totalIngressos;
 
         adicionarIngressos(ingressoModels, expectedVip, TipoIngressoEnum.VIP, precoNormal * 2);
         adicionarIngressos(ingressoModels, expectedMeiaEntrada, TipoIngressoEnum.MEIA_ENTRADA, precoNormal * 0.5);
@@ -80,6 +83,7 @@ public class ShowServices {
 
         return ingressoModels;
     }
+
 
     private void adicionarIngressos(List<IngressoModel> ingressoModels, int quantidade, TipoIngressoEnum tipo, Double preco) {
         for (int i = 0; i < quantidade; i++) {
