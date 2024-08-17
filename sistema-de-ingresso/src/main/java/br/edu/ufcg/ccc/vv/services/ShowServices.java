@@ -50,6 +50,8 @@ public class ShowServices {
             throw new IllegalArgumentException("Limites de VIP estão inválidos");
         if(quantIngressosPorLote < 1)
             throw new IllegalArgumentException("Quantidade de ingressos inválidos");
+        if (descontoLote < 0 || descontoLote > 25)
+            throw new IllegalArgumentException("Desconto inválidos");
 
         List<LoteModel> loteModels = criarLotes(quantLotes, quantIngressosPorLote, precoNormal, descontoLote, vip / 100);
         if (isDataEspecial) {
