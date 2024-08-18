@@ -51,5 +51,6 @@ public class ProcessarPagamentoTest {
         // Assert
         assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento());
     }
+    
 
 }
