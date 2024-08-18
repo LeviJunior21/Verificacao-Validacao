@@ -79,7 +79,7 @@ public class ConsoleMenuController {
         System.out.print("Desconto Lote: ");
         Double descontoLote = scanner.nextDouble();
 
-        System.out.print("Percentual VIP (0,2 a 0,3): ");
+        System.out.print("Percentual VIP (20 a 30): ");
         Double vip = scanner.nextDouble();
 
         showServices.criarShow(date, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);

@@ -6,7 +6,6 @@ import br.edu.ufcg.ccc.vv.repository.ShowRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Serviço que gerencia operações relacionadas a shows.
@@ -45,7 +44,15 @@ public class ShowServices {
     public void criarShow(Date date, String artista, Double cache, Double totalDespesas, Integer quantLotes,
                           Integer quantIngressosPorLote, Double precoNormal, Boolean isDataEspecial,
                           Double descontoLote, Double vip) {
-        List<LoteModel> loteModels = criarLotes(quantLotes, quantIngressosPorLote, precoNormal, descontoLote, vip);
+
+        if (vip < 20 || vip > 30)
+            throw new IllegalArgumentException("Limites de VIP estão inválidos");
+        if(quantIngressosPorLote < 1)
+            throw new IllegalArgumentException("Quantidade de ingressos inválidos");
+        if (descontoLote < 0 || descontoLote > 25)
+            throw new IllegalArgumentException("Desconto inválidos");
+
+        List<LoteModel> loteModels = criarLotes(quantLotes, quantIngressosPorLote, precoNormal, descontoLote, vip / 100);
         if (isDataEspecial) {
             totalDespesas *= 1.15;
         }
@@ -59,25 +66,32 @@ public class ShowServices {
         descontoLote = ajustarDesconto(descontoLote);
 
         for (int i = 0; i < quantLotes; i++) {
-            List<IngressoModel> ingressoModels = criarIngressos(quantIngressosPorLote, precoNormal, vip);
+            List<IngressoModel> ingressoModels = criarIngressos(quantIngressosPorLote, precoNormal, vip, descontoLote);
             LoteModel loteModel = new LoteModel(descontoLote, ingressoModels, loteId++);
             loteModels.add(loteModel);
         }
         return loteModels;
     }
 
-    private List<IngressoModel> criarIngressos(Integer quantIngressosPorLote, Double precoNormal, Double vip) {
+    private List<IngressoModel> criarIngressos(Integer quantIngressosPorLote, Double precoBase, Double vip, Double descontoLote) {
         List<IngressoModel> ingressoModels = new ArrayList<>();
-        int expectedVip = (int) (quantIngressosPorLote * vip);
-        int expectedMeiaEntrada = (int) (quantIngressosPorLote * 0.10);
-        int expectedNormal = quantIngressosPorLote - expectedVip - expectedMeiaEntrada;
 
-        adicionarIngressos(ingressoModels, expectedVip, TipoIngressoEnum.VIP, precoNormal * 2);
-        adicionarIngressos(ingressoModels, expectedMeiaEntrada, TipoIngressoEnum.MEIA_ENTRADA, precoNormal * 0.5);
+        int expectedVip = (int) Math.round(quantIngressosPorLote * vip);
+        int expectedMeiaEntrada = (int) Math.round(quantIngressosPorLote * 0.10);
+
+        int totalIngressos = expectedVip + expectedMeiaEntrada;
+        int expectedNormal = quantIngressosPorLote - totalIngressos;
+
+        double precoVip = (precoBase * 2) - (2 * precoBase * descontoLote/100);
+        double precoNormal = precoBase - (precoBase * descontoLote/100);
+
+        adicionarIngressos(ingressoModels, expectedVip, TipoIngressoEnum.VIP, precoVip);
+        adicionarIngressos(ingressoModels, expectedMeiaEntrada, TipoIngressoEnum.MEIA_ENTRADA, precoBase * 0.5);
         adicionarIngressos(ingressoModels, expectedNormal, TipoIngressoEnum.NORMAL, precoNormal);
 
         return ingressoModels;
     }
+
 
     private void adicionarIngressos(List<IngressoModel> ingressoModels, int quantidade, TipoIngressoEnum tipo, Double preco) {
         for (int i = 0; i < quantidade; i++) {

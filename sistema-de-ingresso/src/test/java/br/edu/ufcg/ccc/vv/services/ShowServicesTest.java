@@ -2,6 +2,7 @@ package br.edu.ufcg.ccc.vv.services;
 
 import br.edu.ufcg.ccc.vv.models.*;
 import br.edu.ufcg.ccc.vv.repository.ShowRepository;
+import br.edu.ufcg.ccc.vv.utils.InMemoryShowRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.00;
-            double vip = 0.30;
+            double vip = 30;
 
             // Execute o método criarShow
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -53,7 +54,7 @@ public class ShowServicesTest {
 
             // Verificar a distribuição dos ingressos
             int totalIngressos = lote.getIngressos().size();
-            int expectedVip = (int) (totalIngressos * vip);
+            int expectedVip = (int) (totalIngressos * vip / 100);
             int expectedMeiaEntrada = (int) (totalIngressos * 0.10);
             int expectedNormal = totalIngressos - expectedVip - expectedMeiaEntrada;
 
@@ -77,22 +78,14 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 30.; // Desconto acima do máximo permitido
-            Double vip = 0.30;
+            double vip = 30;
 
-            // Execute o método criarShow
-            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
-
-            // Verificar se o show foi salvo corretamente
-            ShowModel show = showRepository.findById(data, artista).get();
-            assertNotNull(show);
-
-            List<LoteModel> lotes = show.getLotes();
-            assertEquals(quantLotes, lotes.size());
-            LoteModel lote = lotes.getFirst();
-            assertEquals(quantIngressosPorLote, lote.getIngressos().size());
-
-            // O desconto não deve ultrapassar 25%
-            assertEquals(25, lote.getDesconto());
+            try {
+                showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+                fail("Era esperado que isso não funcionasse");
+            }catch (Exception e){
+                assertEquals("Desconto inválidos", e.getMessage());
+            }
         }
 
         @Test
@@ -106,19 +99,14 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 10.;
-            Double vip = 0.30;
+            double vip = 30;
 
-            // Execute o método criarShow
-            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
-
-            // Verificar se o show foi salvo corretamente
-            ShowModel show = showRepository.findById(data, artista).get();
-            assertNotNull(show);
-
-            List<LoteModel> lotes = show.getLotes();
-            assertEquals(quantLotes, lotes.size());
-            LoteModel lote = lotes.getFirst();
-            assertEquals(quantIngressosPorLote, lote.getIngressos().size());
+            try {
+                showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+                fail("Era esperado que isso não funcionasse");
+            }catch (Exception e){
+                assertEquals("Quantidade de ingressos inválidos", e.getMessage());
+            }
         }
 
         @Test
@@ -132,7 +120,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = true; // Data especial
             Double descontoLote = 10.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Execute o método criarShow
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -155,19 +143,14 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = -5.; // Desconto negativo
-            Double vip = 0.30;
+            double vip = 30;
 
-            // Execute o método criarShow
-            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
-
-            // Verificar se o show foi salvo corretamente
-            ShowModel show = showRepository.findById(data, artista).get();
-            assertNotNull(show);
-
-            List<LoteModel> lotes = show.getLotes();
-            assertEquals(quantLotes, lotes.size());
-            LoteModel lote = lotes.getFirst();
-            assertEquals(0, lote.getDesconto());
+            try {
+                showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+                fail("Era esperado que isso não funcionasse");
+            }catch (Exception e){
+                assertEquals("Desconto inválidos", e.getMessage());
+            }
         }
     }
 
@@ -184,7 +167,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -213,7 +196,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -244,19 +227,14 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
-            // Cria o show
-            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
-
-            // Recupera o show salvo
-            ShowModel show = showRepository.findById(data, artista).get();
-            LoteModel lote = show.getLotes().getFirst();
-
-            // Tenta comprar um ingresso
-            Exception exception = assertThrows(IllegalStateException.class, () -> showServices.comprarIngresso(data, artista, lote.getId(), TipoIngressoEnum.VIP));
-
-            assertEquals("Nenhum ingresso disponível para o lote", exception.getMessage());
+            try {
+                showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+                fail("Era esperado que isso não funcionasse");
+            }catch (Exception e){
+                assertEquals("Quantidade de ingressos inválidos", e.getMessage());
+            }
         }
 
         @Test
@@ -270,7 +248,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -299,7 +277,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -333,7 +311,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -367,7 +345,7 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
             // Cria o show
             showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
@@ -401,20 +379,14 @@ public class ShowServicesTest {
             Double precoNormal = 10.0;
             Boolean isDataEspecial = false;
             Double descontoLote = 0.;
-            Double vip = 0.30;
+            double vip = 30;
 
-            // Cria o show
-            showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
-
-            // Cria o relatório
-            RelatorioModel relatorio = showServices.criarRelatorio(data, artista);
-
-            assertNotNull(relatorio);
-            assertEquals(0, relatorio.getNumIngressoVip());
-            assertEquals(0, relatorio.getNumIngressoMeia());
-            assertEquals(0, relatorio.getNumIngressoNormal());
-            assertEquals(0.0, relatorio.getValorTotal());
-            assertEquals(StatusEnum.PREJUÍZO, relatorio.getStatus());
+            try {
+                showServices.criarShow(data, artista, cache, totalDespesas, quantLotes, quantIngressosPorLote, precoNormal, isDataEspecial, descontoLote, vip);
+                fail("Era esperado que isso não funcionasse");
+            }catch (Exception e){
+                assertEquals("Quantidade de ingressos inválidos", e.getMessage());
+            }
         }
 
         @Test
@@ -429,36 +401,5 @@ public class ShowServicesTest {
 
             assertEquals("Show não encontrado", exception.getMessage());
         }
-    }
-}
-
-class InMemoryShowRepository implements ShowRepository {
-    private final Map<String, ShowModel> database = new HashMap<>();
-
-    @Override
-    public ShowModel save(ShowModel show) {
-        String key = generateKey(show.getData(), show.getArtista());
-        database.put(key, show);
-        return show;
-    }
-
-    @Override
-    public Optional<ShowModel> findById(Date id, String artista) {
-        String key = generateKey(id, artista);
-        return Optional.ofNullable(database.get(key));
-    }
-
-    @Override
-    public List<ShowModel> findAll() {
-        return List.of();
-    }
-
-    @Override
-    public void deleteById(Date id, String artista) {
-
-    }
-
-    private String generateKey(Date data, String artista) {
-        return data.toString() + "|" + artista;
     }
 }
