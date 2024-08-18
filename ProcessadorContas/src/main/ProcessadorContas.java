@@ -23,7 +23,7 @@ public class ProcessadorContas {
 				}
 			}
 		}
-
+		System.out.print(valorTotalPagar);
 		validarPagamento(valorTotalPagar, fatura);
 	}
 	

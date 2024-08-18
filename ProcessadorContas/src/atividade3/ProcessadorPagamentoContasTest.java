@@ -118,7 +118,7 @@ public class ProcessadorPagamentoContasTest {
     @Test
     public void testValorBoletoLimiteSuperio2() {
         // Arrange
-        Conta conta = new Conta("129", new Date(), 5000.01, TipoPagamento.BOLETO);
+        Conta conta = new Conta("129", new Date(), 5000.02, TipoPagamento.BOLETO);
         Fatura fatura = new Fatura(new Date(), 5000.00, "Bruno");
         
         // Act
