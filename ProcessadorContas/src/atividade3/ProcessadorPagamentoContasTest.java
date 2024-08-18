@@ -18,9 +18,11 @@ public class ProcessadorPagamentoContasTest {
         // Arrange
         Conta conta = new Conta("123", new Date(), 0.00, TipoPagamento.BOLETO);
         Fatura fatura = new Fatura(new Date(), 1000.00, "João");
+        
+        // Act
         ProcessadorContas processador = new ProcessadorContas();
 
-        // Act & Assert
+        // Assert
         assertThrows(IllegalArgumentException.class, () -> {
             processador.processarContas(fatura, Arrays.asList(conta));
         });

@@ -12,10 +12,6 @@ public class ProcessadorContas {
 	 * @param contas - Contas pendentes. 
 	 */
 	public void processarContas(Fatura fatura, List<Conta> contas) {
-		if (fatura.getValorFatura() < 0) {
-			return;
-		}
-		
 		Double valorTotalPagar = 0.0;
 		
 		for (Conta conta: contas) {
@@ -27,7 +23,7 @@ public class ProcessadorContas {
 				}
 			}
 		}
-		
+
 		validarPagamento(valorTotalPagar, fatura);
 	}
 	
@@ -82,6 +78,10 @@ public class ProcessadorContas {
 		Double valorPago = conta.getValorPago();
 		
 		if (conta.getTipoPagamento().equals(TipoPagamento.BOLETO)) {
+			if (valorPago < 0.01 || valorPago > 5000.00) {
+				throw new IllegalArgumentException("Valor de boleto inválido. Deve ser entre R$0,01 e R$5.000,00.");
+			}
+			
 			if (dataPagamento.after(conta.getData())) {
 				valorPago *= 1.1;
 			}
