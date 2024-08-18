@@ -2,6 +2,7 @@ package main;
 
 import java.util.Date;
 
+
 public class Fatura {
 	private final Date dataVencimento;
 	private final Double valorFatura;
