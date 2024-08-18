@@ -71,4 +71,18 @@ public class ProcessadorPagamentoContasTest {
         // Assert
         assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento());
     }
+    
+    @Test
+    public void testValorBoletoLimiteSuperior() {
+        // Arrange
+        Conta conta = new Conta("127", new Date(), 4999.99, TipoPagamento.BOLETO);
+        Fatura fatura = new Fatura(new Date(), 4999.99, "Carlos");
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Act
+        processador.processarContas(fatura, Arrays.asList(conta));
+
+        // Assert
+        assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento());
+    }
 }
