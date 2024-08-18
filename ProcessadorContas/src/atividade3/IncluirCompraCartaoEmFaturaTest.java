@@ -35,4 +35,19 @@ public class IncluirCompraCartaoEmFaturaTest {
         // Assert
         assertTrue(isValida, "A conta deveria ser incluída na fatura");
     }
+    
+    @Test
+    public void testContaIncluidaNaFaturaExatamente15DiasAntes() {
+        // Arrange
+        Date dataFatura = criarData(23, 07, 2024);
+        Date dataConta = criarData(07, 07, 2024);
+        Conta conta = new Conta("124", dataConta, 500.00, TipoPagamento.CARTAO_CREDITO);
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Act
+        boolean isValida = processador.pagamentoValido(new Pagamento(500.00, dataConta, TipoPagamento.CARTAO_CREDITO), dataFatura);
+
+        // Assert
+        assertTrue(isValida, "A conta deveria ser incluída na fatura");
+    }
 }
