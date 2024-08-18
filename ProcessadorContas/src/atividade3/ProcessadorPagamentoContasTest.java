@@ -114,4 +114,19 @@ public class ProcessadorPagamentoContasTest {
             processador.processarContas(fatura, Arrays.asList(conta));
         });
     }
+    
+    @Test
+    public void testValorBoletoLimiteSuperio2() {
+        // Arrange
+        Conta conta = new Conta("129", new Date(), 5000.01, TipoPagamento.BOLETO);
+        Fatura fatura = new Fatura(new Date(), 5000.00, "Bruno");
+        
+        // Act
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            processador.processarContas(fatura, Arrays.asList(conta));
+        });
+    }
 }
