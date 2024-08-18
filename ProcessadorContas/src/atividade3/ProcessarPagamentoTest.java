@@ -36,4 +36,20 @@ public class ProcessarPagamentoTest {
         // Assert
         assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento());
     }
+    
+
+    @Test
+    public void testValorFaturaIgualSomaPagamentos() {
+        // Arrange
+        Fatura fatura = new Fatura(criarData(23, 07, 2024), 1000.00, "Usuario2");
+        Conta conta = new Conta("124", criarData(01, 07, 2024), 1000.00, TipoPagamento.CARTAO_CREDITO);
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Act
+        processador.processarContas(fatura, Arrays.asList(conta));
+
+        // Assert
+        assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento());
+    }
+
 }
