@@ -59,7 +59,7 @@ public class ProcessadorContas {
 			Long diasEmSegundos = Math.abs(vencimentoFatura.getTime() - pagamento.getDataPagamento().getTime());
 			Long dias = diasEmSegundos / (1000 * 60 * 60 * 24);
 			
-			return dias > 15;
+			return dias >= 15;
 		} else {
 			return !pagamento.getDataPagamento().after(vencimentoFatura);
 		}
