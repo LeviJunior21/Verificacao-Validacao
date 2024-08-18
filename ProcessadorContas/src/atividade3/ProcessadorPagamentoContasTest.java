@@ -57,4 +57,18 @@ public class ProcessadorPagamentoContasTest {
         // Assert
         assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento());
     }
+    
+    @Test
+    public void testValorBoletoIntermediario() {
+        // Arrange
+        Conta conta = new Conta("126", new Date(), 1023.45, TipoPagamento.BOLETO);
+        Fatura fatura = new Fatura(new Date(), 1023.45, "Ana");
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Act
+        processador.processarContas(fatura, Arrays.asList(conta));
+
+        // Assert
+        assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento());
+    }
 }
