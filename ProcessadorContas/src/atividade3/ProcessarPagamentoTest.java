@@ -66,5 +66,19 @@ public class ProcessarPagamentoTest {
         // Assert
         assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento());
     }
+    
 
+    @Test
+    public void testValorFaturaMaiorQueSomaPagamentosPorDoisCentavos() {
+        // Arrange
+        Fatura fatura = new Fatura(criarData(23, 07, 2024), 1000.02, "Usuario4");
+        Conta conta = new Conta("126", criarData(01, 07, 2024), 1000.00, TipoPagamento.CARTAO_CREDITO);
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Act
+        processador.processarContas(fatura, Arrays.asList(conta));
+
+        // Assert
+        assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento());
+    }
 }
