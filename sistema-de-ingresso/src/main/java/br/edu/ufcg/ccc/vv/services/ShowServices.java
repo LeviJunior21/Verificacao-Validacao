@@ -6,7 +6,6 @@ import br.edu.ufcg.ccc.vv.repository.ShowRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Serviço que gerencia operações relacionadas a shows.
@@ -67,14 +66,14 @@ public class ShowServices {
         descontoLote = ajustarDesconto(descontoLote);
 
         for (int i = 0; i < quantLotes; i++) {
-            List<IngressoModel> ingressoModels = criarIngressos(quantIngressosPorLote, precoNormal, vip);
+            List<IngressoModel> ingressoModels = criarIngressos(quantIngressosPorLote, precoNormal, vip, descontoLote);
             LoteModel loteModel = new LoteModel(descontoLote, ingressoModels, loteId++);
             loteModels.add(loteModel);
         }
         return loteModels;
     }
 
-    private List<IngressoModel> criarIngressos(Integer quantIngressosPorLote, Double precoNormal, Double vip) {
+    private List<IngressoModel> criarIngressos(Integer quantIngressosPorLote, Double precoBase, Double vip, Double descontoLote) {
         List<IngressoModel> ingressoModels = new ArrayList<>();
 
         int expectedVip = (int) Math.round(quantIngressosPorLote * vip);
@@ -83,8 +82,11 @@ public class ShowServices {
         int totalIngressos = expectedVip + expectedMeiaEntrada;
         int expectedNormal = quantIngressosPorLote - totalIngressos;
 
-        adicionarIngressos(ingressoModels, expectedVip, TipoIngressoEnum.VIP, precoNormal * 2);
-        adicionarIngressos(ingressoModels, expectedMeiaEntrada, TipoIngressoEnum.MEIA_ENTRADA, precoNormal * 0.5);
+        double precoVip = (precoBase * 2) - (2 * precoBase * descontoLote/100);
+        double precoNormal = precoBase - (precoBase * descontoLote/100);
+
+        adicionarIngressos(ingressoModels, expectedVip, TipoIngressoEnum.VIP, precoVip);
+        adicionarIngressos(ingressoModels, expectedMeiaEntrada, TipoIngressoEnum.MEIA_ENTRADA, precoBase * 0.5);
         adicionarIngressos(ingressoModels, expectedNormal, TipoIngressoEnum.NORMAL, precoNormal);
 
         return ingressoModels;
