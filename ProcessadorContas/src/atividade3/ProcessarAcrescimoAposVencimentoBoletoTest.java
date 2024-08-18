@@ -37,7 +37,6 @@ public class ProcessarAcrescimoAposVencimentoBoletoTest {
         assertEquals(110.00, pagamento.getValorPago(), 0.01);
     }
     
-
     @Test
     public void testPagamentoNaDataSemAcrescimo() {
         // Arrange

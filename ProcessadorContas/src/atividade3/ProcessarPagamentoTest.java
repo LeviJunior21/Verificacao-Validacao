@@ -65,7 +65,6 @@ public class ProcessarPagamentoTest {
         assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento());
     }
     
-
     @Test
     public void testValorFaturaMaiorQueSomaPagamentosPorUmCentavo() {
         // Arrange
@@ -79,7 +78,6 @@ public class ProcessarPagamentoTest {
         // Assert
         assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento());
     }
-    
 
     @Test
     public void testValorFaturaMaiorQueSomaPagamentosPorDoisCentavos() {
