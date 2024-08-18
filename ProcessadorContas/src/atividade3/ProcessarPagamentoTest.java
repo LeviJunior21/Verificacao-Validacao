@@ -53,4 +53,18 @@ public class ProcessarPagamentoTest {
     }
     
 
+    @Test
+    public void testValorFaturaMaiorQueSomaPagamentosPorUmCentavo() {
+        // Arrange
+        Fatura fatura = new Fatura(criarData(23, 07, 2024), 1000.01, "Usuario3");
+        Conta conta = new Conta("125", criarData(01, 07, 2024), 1000.00, TipoPagamento.CARTAO_CREDITO);
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Act
+        processador.processarContas(fatura, Arrays.asList(conta));
+
+        // Assert
+        assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento());
+    }
+
 }
