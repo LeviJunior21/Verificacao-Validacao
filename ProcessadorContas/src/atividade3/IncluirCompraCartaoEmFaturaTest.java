@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class IncluirCompraCartaoEmFaturaTest {
-
+	
     private Date criarData(int dia, int mes, int ano) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, dia);

@@ -45,7 +45,7 @@ public class ProcessadorContas {
 	
 	/**
 	 * Validador de data de expiração do pagamento da fatura para cada tipo de pagamento.
-	 * Se o tipo de pagamento for CARTÃO DE CRÉDITO, caPENDENTEso a data da conta seja de pelo menos 15 dias anteriores a 
+	 * Se o tipo de pagamento for CARTÃO DE CRÉDITO, e a data da conta seja de pelo menos 15 dias anteriores a 
 	 * data da compra, então o valor do pagamento é incluido (retorna true), caso contrário não é incluido (retorna false).
 	 * 
 	 * Além disso, checamos se a data de pagamento da conta ultrapassou (true) ou não (false) a data de pagamento da fatura. 
