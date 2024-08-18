@@ -36,4 +36,21 @@ public class ProcessarAcrescimoAposVencimentoBoletoTest {
         assertNotNull(pagamento);
         assertEquals(110.00, pagamento.getValorPago(), 0.01);
     }
+    
+
+    @Test
+    public void testPagamentoNaDataSemAcrescimo() {
+        // Arrange
+        Date dataCompra = criarData(23, 07, 2024);
+        Date dataPagamento = criarData(23, 07, 2024); // Na data da compra
+        Conta conta = new Conta("124", dataCompra, 100.00, TipoPagamento.BOLETO);
+        ProcessadorContas processador = new ProcessadorContas();
+
+        // Act
+        Pagamento pagamento = processador.realizarPagamento(conta, dataPagamento);
+
+        // Assert
+        assertNotNull(pagamento);
+        assertEquals(100.00, pagamento.getValorPago());
+    }
 }
