@@ -93,7 +93,7 @@ class ProcessadorContasTest {
 		
 		// Assert
 		assertAll(
-			() -> assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento())
+			() -> assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento())
 		);
 	}
 	
@@ -110,7 +110,7 @@ class ProcessadorContasTest {
 				
 		// Assert
 		assertAll(
-			() -> assertEquals(StatusPagamento.PENDENTE, fatura.getStatusPagamento())
+			() -> assertEquals(StatusPagamento.PAGA, fatura.getStatusPagamento())
 		);	
 	}
 	

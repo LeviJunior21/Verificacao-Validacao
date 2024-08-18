@@ -41,7 +41,7 @@ public class ProcessarAcrescimoAposVencimentoBoletoTest {
     public void testPagamentoNaDataSemAcrescimo() {
         // Arrange
         Date dataCompra = criarData(23, 07, 2024);
-        Date dataPagamento = criarData(23, 07, 2024); // Na data da compra
+        Date dataPagamento = criarData(23, 07, 2024);
         Conta conta = new Conta("124", dataCompra, 100.00, TipoPagamento.BOLETO);
         ProcessadorContas processador = new ProcessadorContas();
 
